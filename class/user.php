@@ -4,20 +4,32 @@ class User extends Controller
 {
 
     //Ajouter un utlisateur dans la base de données (REGISTER)
-    public static function addUserInDatabase(mysqli $connect, string $username, string $password, string $email, string $token): int
+    public static function addUserInDatabase(mysqli $connect, string $username, string $password, string $password2, string $email, string $token): int
     {
         //Verifier si l'utilisateur n'est pas déja dans la BDD
         if (self::checkUsername($connect, $username, $password)) //Username deja utilisé
         {
             return -1;
-        } else if  (self::checkEmail($connect, $email)) //Email deja utilisé
+        } else if (self::checkEmail($connect, $email)) //Email deja utilisé
         {
             return -2;
         }
-        //Ajouter l'utilisateur
+
+        //On verifie les entrées utilisateurs
+        if (!self::isEmailValid($email)) //adresse email invalide
+        {
+            return -3;
+        } else if (!self::passwordMatch($password,$password2)) //mot de passe incorrect
+        {
+            return -4;
+        }
+
+        //On ajoute l'utilisateur
+        //Crypté le mot de passe avant de le stocker
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        //Ajouter l'utilisateur dans la BDD
         self::insertData($connect, "users", "username=?,password=?,email=?,token=?", [$username, $password, $email, $token]);
         return 1;
-
     }
 
 
@@ -25,7 +37,7 @@ class User extends Controller
     public static function isUserInDatabase(mysqli $connect, string $username, string $password): int
     {
         //On verifie que le mot de passe, le nom d'utilisateur entrés sont stockés dans la DBB
-        
+
         if (!self::checkUsername($connect, $username)) //Nom utilisateur incorrect 
         {
             return -1;
@@ -35,12 +47,6 @@ class User extends Controller
         }
 
         return 1;
-    }
-
-
-    static function passwordMatch(string $password, string $passwordConfirm)
-    {
-        # code...
     }
 
     //Verifie si le mot de passe entré est le même que celui stocké dans la BDD	
@@ -70,6 +76,26 @@ class User extends Controller
     static function checkEmail(mysqli $connect, string $email): bool
     {
         if (self::fetchData($connect, "*", "users", "WHERE email=?", [$email])) {
+            return true;
+        }
+        return false;
+    }
+
+    //Verifier les entrées utilisateurs
+
+    //Verifier si le mot de passe et la confirmation du mot de passe sont égaux
+    static function passwordMatch(string $password1, string $password2): bool
+    {
+        if (strcmp($password1, $password2) == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    //Verifier si l'adresse mail entré est bien une adresse mail
+    static function isEmailValid(string $email): bool
+    {
+        if (filter_var($email,FILTER_VALIDATE_EMAIL)) {
             return true;
         }
         return false;

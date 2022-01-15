@@ -13,9 +13,10 @@ if (isset($_POST['register'])) {
 		if ($_POST['register'] === "send") {
 			$email = htmlspecialchars($_POST['email']);
 			$user = htmlspecialchars($_POST['username']);
-			$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+			$password = $_POST['password'];
+			$password2 = $_POST['passwordConfirm'];
 			$token = Util::generateToken(20);
-			$registered = User::addUserInDatabase($connect, $user, $password, $email, $token);
+			$registered = User::addUserInDatabase($connect, $user, $password,$password2, $email, $token);
 		}
 	}
 }
@@ -23,9 +24,7 @@ if (isset($_POST['register'])) {
 if (isset($_POST['login'])) {
 	if (!empty($_POST['username']) && !empty($_POST['password'])) {
 		if ($_POST['login'] === "send") {
-			// $isValid = login($connect, $_POST['username'], $_POST['password']);
-			$isValid = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
-			
+			$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
 		}
 	}
 }
@@ -52,37 +51,73 @@ if (isset($_POST['login'])) {
 }
 </style>
 <body>
-	<form method="POST">
+	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<label for="">register</label>
-		<input name="username" placeholder="USERNAME" type="text">
-		<input name="email" placeholder="EMAIL" type="text">
-		<input name="password" placeholder="PASSWORD" type="password">
-		<!-- <input name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password"> -->
+		<input id="regUid" name="username" placeholder="USERNAME" type="text" required>
+		<input id="regEmail" name="email" placeholder="EMAIL" type="text" required>
+		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" required>
+		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" required>
 		<input type="submit" name="register" value="send">
 	</form>
-	<form id="logForm" method="POST">
+	<form id="logForm" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<label for="">login</label>
-		<input id="logUid" name="username" placeholder="USERNAME" type="text">
-		<input id="logPwd" name="password" placeholder="PASSWORD" type="password">
+		<input id="logUid" name="username" placeholder="USERNAME" type="text" required>
+		<input id="logPwd" name="password" placeholder="PASSWORD" type="password" required>
 		<input type="submit" name="login" value="send">
 	</form>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <?php
-if (isset($isValid)) {
-	switch ($isValid) {
+//Register
+if (isset($registered)) {
+	switch ($registered) {
 		case -1:
-			echo '<script>swal("Authentification failed", "The user is not found.", "error");
-			logUid.classList.add("inputError");
-			logPwd.classList.remove("inputError");</script>';
+			echo '<script>
+			swal("Authentification failed", "Choose another username.", "error");
+			regUid.classList.add("inputError");
+			</script>';
 			break;
 		case -2:
 			echo '<script>
-			var logUid = document.getElementById("logUid");
-			var logPwd = document.getElementById("logPwd");
+			swal("Authentification failed", "The email is already taken.", "error");
+			regEmail.classList.add("inputError");
+			</script>';
+			break;
+		case -3:
+			echo '<script>
+			swal("Authentification failed", "The email is not valid.", "error");
+			regEmail.classList.add("inputError");
+			</script>';
+			break;
+		case -4:
+			echo '<script>
+			swal("Authentification failed", "Your password is incorrect.", "error");
+			regPwd.classList.add("inputError");
+			</script>';
+			break;
+		case 1:
+			echo '<script>
+			swal("Welcome!", "Now you can sign in.", "success");
+			console.log("Auth ok")
+			</script>';
+			break;
+	}
+}
+
+//Login
+if (isset($loggedIn)) {
+	switch ($loggedIn) {
+		case -1:
+			echo '<script>swal("Authentification failed", "The user is not found.", "error");
+			logUid.classList.add("inputError");
+			</script>';
+			break;
+		case -2:
+			echo '<script>
 			swal("Authentification failed", "Your password is incorrect.", "error");
 			logPwd.classList.add("inputError");
-			logUid.classList.remove("inputError"); </script>';
+			</script>';
 			break;
 		case 1:
 		echo '<script>console.log("Auth ok")</script>';
