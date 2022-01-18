@@ -1,6 +1,5 @@
 <?php
 //Classe qui contient des fonctions statiques utilitaires
-require_once "./class/database-connection.php";
 
 class Util
 {
