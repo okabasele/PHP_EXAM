@@ -7,4 +7,13 @@
         background-position: 250px 10px;
         background-repeat: no-repeat;
     }
+
+    input[type=submit].link {
+        border: none;
+        background: none;
+        display: inline;
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer; 
+    }
 </style>

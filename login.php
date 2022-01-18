@@ -10,10 +10,13 @@ $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 
 if (isset($_POST['login'])) {
-	if (!empty($_POST['username']) && !empty($_POST['password'])) {
-		if ($_POST['login'] === "send") {
-			$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
-		}
+	if ($_POST['login'] === "send") {
+		$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
+	}
+}
+if (isset($_POST['register'])) {
+	if ($_POST['register'] === "Sign up") {
+		Util::redirect("register.php");
 	}
 }
 ?>
@@ -27,22 +30,33 @@ if (isset($_POST['login'])) {
 	<title>Sign In</title>
 </head>
 <style>
-	input.inputError{
-    box-shadow: 0 0px 6px 0 #FB3640;
-    border-color:#FB3640 ;
-    background-image: url("https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png");
-    background-size: 20px;
-    background-position: 250px 10px;
-    background-repeat: no-repeat;
-}
+	input.inputError {
+		box-shadow: 0 0px 6px 0 #FB3640;
+		border-color: #FB3640;
+		background-image: url("https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png");
+		background-size: 20px;
+		background-position: 250px 10px;
+		background-repeat: no-repeat;
+	}
 </style>
+
 <body>
-	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-		<label for="">login</label>
-		<input id="logUid" name="username" placeholder="USERNAME" type="text" require_onced>
-		<input id="logPwd" name="password" placeholder="PASSWORD" type="password" require_onced>
-        <button name="login" type="submit" value="send">SIGN IN</button>
-	</form>
+	<div class="container">
+
+		<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+			<label for="">login</label>
+			<input id="logUid" name="username" placeholder="USERNAME" type="text" required>
+			<input id="logPwd" name="password" placeholder="PASSWORD" type="password" required>
+			<p>Forgot password?</p>
+			<button name="login" type="submit" value="send">SIGN IN</button>
+		</form>
+		<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+			<div>
+				Not a member?
+				<input class="link" name="register" type="submit" value="Sign up">
+			</div>
+		</form>
+	</div>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -62,9 +76,10 @@ if (isset($loggedIn)) {
 			</script>';
 			break;
 		case 1:
-		echo '<script>console.log("Auth ok")</script>';
+			echo '<script>console.log("Auth ok")</script>';
 			break;
 	}
 }
 ?>
+
 </html>

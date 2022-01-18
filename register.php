@@ -21,6 +21,11 @@ if (isset($_POST['register'])) {
 		$registered = User::addUserInDatabase($connect, $user, $password, $password2, $email, $token);
 	}
 }
+if (isset($_POST['login'])) {
+	if ($_POST['login'] === "Login here") {
+		Util::redirect("login.php");
+	}
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,11 +40,23 @@ if (isset($_POST['register'])) {
 <body>
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<label for="">register</label>
-		<input id="regUid" name="username" placeholder="USERNAME" type="text" require_onced>
-		<input id="regEmail" name="email" placeholder="EMAIL" type="text" require_onced>
-		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" require_onced>
-		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" require_onced>
+		<input id="regUid" name="username" placeholder="USERNAME" type="text" required>
+		<input id="regEmail" name="email" placeholder="EMAIL" type="text" required>
+		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" required>
+		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" required>
+
+		<div>
+			<input type="checkbox" name="" id="" required>
+			I have accepted the terms and conditions
+		</div>
+
 		<button name="register" type="submit" value="send">SIGN UP</button>
+	</form>
+	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+		<div>
+			Already have an account?
+			<input class="link" name="login" type="submit" value="Login here">
+		</div>
 	</form>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
