@@ -35,3 +35,9 @@ class Controller
         return false;
     }
 }
+/*
+"SELECT username FROM users WHERE username=Nesrine";
+"SELECT username FROM users WHERE username=?"."Nesrine";
+Controller::fetchData($connect,"username","users","WHERE email=?",["nesrine@gmail.com"]);
+"INSERT INTO articles SET title='bonjour';
+*/

@@ -5,6 +5,7 @@ require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
 
+session_start();
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
@@ -76,6 +77,9 @@ if (isset($loggedIn)) {
 			break;
 		case 1:
 			echo '<script>console.log("Auth ok")</script>';
+			$_SESSION["logged-in"]= true;
+			$userToken = Controller::fetchData($connect,"token","users","WHERE username=?",[$_POST['username']]);
+			$_SESSION["token"]= $userToken["token"];
 			Util::redirect("home.php");
 			break;
 	}
