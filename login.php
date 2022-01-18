@@ -44,7 +44,6 @@ if (isset($_POST['register'])) {
 	<div class="container">
 
 		<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-			<label for="">login</label>
 			<input id="logUid" name="username" placeholder="USERNAME" type="text" required>
 			<input id="logPwd" name="password" placeholder="PASSWORD" type="password" required>
 			<p>Forgot password?</p>
@@ -77,6 +76,7 @@ if (isset($loggedIn)) {
 			break;
 		case 1:
 			echo '<script>console.log("Auth ok")</script>';
+			Util::redirect("home.php");
 			break;
 	}
 }

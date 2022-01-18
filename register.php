@@ -39,18 +39,14 @@ if (isset($_POST['login'])) {
 
 <body>
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-		<label for="">register</label>
 		<input id="regUid" name="username" placeholder="USERNAME" type="text" required>
 		<input id="regEmail" name="email" placeholder="EMAIL" type="text" required>
 		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" required>
 		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" required>
-
-		<div>
-			<input type="checkbox" name="" id="" required>
-			I have accepted the terms and conditions
-		</div>
-
 		<button name="register" type="submit" value="send">SIGN UP</button>
+		<div>
+			By clicking the Sign up button you agree to our <a href="">Terms and Conditions</a> and <a href="">Policy Privacy</a>
+		</div>
 	</form>
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<div>
