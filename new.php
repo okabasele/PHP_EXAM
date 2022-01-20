@@ -1,5 +1,5 @@
 
-<!DOCTYPE HTML>  
+<!DOCTYPE HTML>
 <html>
 <head>
 <style>
@@ -9,10 +9,12 @@
 <body>  
 
 <?php
+require_once 'class/controller.php';
 // define variables and set to empty values
 $TitleErr = "";
 $Title =  "";
 $Description = "";
+$Publish = "" ;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //ajout article
@@ -30,6 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     $comment = test_input($_POST["Description"]);
   }
+  if ($_POST['register'] === "send") {
+
+    $Publish =self::insertData($connect, "users", "username=?,password=?,email=?,token=?", [$username, $password, $email, $token]) ;
+  }
+
 }
 
 function test_input($data) {
@@ -39,7 +46,7 @@ function test_input($data) {
     return $data;
   }
 
-//  self::insertData($connect, "users", "username=?,password=?,email=?,token=?", [$username, $password, $email, $token]);
+
 ?>
 <h2>Add new artical</h2>
 <p><span class="error">* required field</span></p>
@@ -49,7 +56,7 @@ function test_input($data) {
   <br><br>
   Description: <textarea name="Description" rows="20" cols="70"><?php echo $Description;?></textarea>
   <br><br>
-  <input type="submit" name="submit" value="Submit"> 
+  <button name="Publish" type="submit" value="send">Publish</button>
 </form>
   </body>
 </html>
