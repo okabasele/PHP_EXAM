@@ -21,9 +21,17 @@ class Util
         return substr(str_shuffle(str_repeat($alphabet, $length)), 0, $length);
     }
 
-    static function redirect($url)
+    static function redirect(string $url) : void
     {
         header('Location: ' . $url);
         die();
     }
+
+    static function testInput(string $data) : string
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+      }
 }
