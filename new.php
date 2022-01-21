@@ -9,15 +9,20 @@
 <body>  
 
 <?php
+require_once 'class/database-connection.php';
 require_once 'class/controller.php';
 require_once 'class/util.php';
+//Récuperer la connection à la bdd
+$dbconnect = Util::getDatabaseConnection();
+$connect = $dbconnect->conn;
+
 // define variables and set to empty values
 $titleErr = "";
 $title =  "";
 $description = "";
 $publish = "" ;
-$dateToAdd =  date("D, d M Y H:i:s") ;
-
+$dateToAdd =  date("Y-m-d H:i:s") ;
+echo $dateToAdd;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //ajout article
   if (empty($_POST["title"])) {
@@ -32,34 +37,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["description"])) {
     $description = "";
   } else {
-    $comment = Util::testInput($_POST["description"]);
+    $description = Util::testInput($_POST["description"]);
   }
   if ($_POST['publish'] === "send") {
-
-    $publish =self::insertData($connect, "articles", "title=?,description=?,publicationDate=?", [$title, $description,$dateToAdd]) ;
+    $idAuthor=1;
+    $token = Util::generateToken(20);
+    $publish =Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description,$dateToAdd,$idAuthor,$token]) ;
   }
 
 }
-
+//ça fonctionne :)
 
 ?>
 <h2>Add new artical</h2>
 <p><span class="error">* required field</span></p>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-  Title: <input type="text" Title="Title" value="<?php echo $title;?>" required>
+  Title: <input type="text" name="title" required>
   <span class="error">* <?php echo $titleErr;?></span>
   <br><br>
-  Description: <textarea name="description" rows="20" cols="70"><?php echo $description;?></textarea>
-  <br><br>
-  <button name="publish" type="submit" value="send">Publish</button>
+  Description: <textarea name="description" rows="20" cols="70"></textarea>
   <br><br>
   Categories:
-  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="health") echo "checked";?> value="health">Health
-  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="politics") echo "checked";?> value="politics">Politics
-  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="environment") echo "checked";?> value="environment">Environment
-  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="environment") echo "checked";?> value="beauty">Beauty
-  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="fashion") echo "checked";?> value="fashion">Fashion
-  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="food") echo "checked";?> value="food">Food
+  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="health") echo "checked";?> value="health">Health
+  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="politics") echo "checked";?> value="politics">Politics
+  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="environment") echo "checked";?> value="environment">Environment
+  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="beauty") echo "checked";?> value="beauty">Beauty
+  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="fashion") echo "checked";?> value="fashion">Fashion
+  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="food") echo "checked";?> value="food">Food
+  <br><br>
+  <button name="publish" type="submit" value="send">Publish</button>
 </form>
   </body>
 </html>
