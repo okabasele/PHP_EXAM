@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
   if ($_POST['publish'] === "send") {
     $array= Controller::fetchData($connect, "id", "users", "WHERE token=?", [$_SESSION['token']]);
-    $idAuthor = $array["id"];
+    $idAuthor = $array["idUsers"];
     $token = Util::generateToken(20);
     $publish =Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description,$dateToAdd,$idAuthor,$token]) ;
   }
