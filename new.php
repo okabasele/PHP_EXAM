@@ -52,6 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   Description: <textarea name="description" rows="20" cols="70"><?php echo $description;?></textarea>
   <br><br>
   <button name="publish" type="submit" value="send">Publish</button>
+  <br><br>
+  Categories:
+  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="health") echo "checked";?> value="health">Health
+  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="politics") echo "checked";?> value="politics">Politics
+  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="environment") echo "checked";?> value="environment">Environment
+  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="environment") echo "checked";?> value="beauty">Beauty
+  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="fashion") echo "checked";?> value="fashion">Fashion
+  <input type="radio" name="categories" <?php if (isset($categories) && $categories=="food") echo "checked";?> value="food">Food
 </form>
   </body>
 </html>
