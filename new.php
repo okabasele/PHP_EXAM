@@ -22,7 +22,8 @@ $title =  "";
 $description = "";
 $publish = "" ;
 $dateToAdd =  date("Y-m-d H:i:s") ;
-echo $dateToAdd;
+$categories = "";
+$categoriesErr = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //ajout article
   if (empty($_POST["title"])) {
@@ -44,6 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = Util::generateToken(20);
     $publish =Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description,$dateToAdd,$idAuthor,$token]) ;
   }
+  if (empty($_POST["categories"])) {
+    $categoriesErr = "Please select a categorie";
+  } else {
+    $categories = Util::testInput($_POST["categories"]);
+  }
 
 }
 //ça fonctionne :)
@@ -57,14 +63,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <br><br>
   Description: <textarea name="description" rows="20" cols="70"></textarea>
   <br><br>
-  Categories:
-  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="health") echo "checked";?> value="health">Health
-  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="politics") echo "checked";?> value="politics">Politics
-  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="environment") echo "checked";?> value="environment">Environment
-  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="beauty") echo "checked";?> value="beauty">Beauty
-  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="fashion") echo "checked";?> value="fashion">Fashion
-  <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="food") echo "checked";?> value="food">Food
-  <br><br>
+  <div>
+    Categories:
+    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="health") echo "checked";?> value="health">Health
+    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="politics") echo "checked";?> value="politics">Politics
+    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="environment") echo "checked";?> value="environment">Environment
+    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="beauty") echo "checked";?> value="beauty">Beauty
+    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="fashion") echo "checked";?> value="fashion">Fashion
+    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="food") echo "checked";?> value="food">Food
+    <span class="error">* <?php echo $categoriesErr;?></span>
+    <br><br>
+  </div>
   <button name="publish" type="submit" value="send">Publish</button>
 </form>
   </body>
