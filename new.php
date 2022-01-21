@@ -45,6 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idAuthor = $array["idUsers"];
     $token = Util::generateToken(20);
     $publish =Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description,$dateToAdd,$idAuthor,$token]) ;
+    //reirection vers details
+    Util::redirect("details.php?art=.$token.");
   }
   if (empty($_POST["categories"])) {
     $categoriesErr = "Please select a categorie";

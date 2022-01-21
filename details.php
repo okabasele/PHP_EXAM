@@ -9,10 +9,9 @@ session_start();
 
 if(isset($_GET['art']) && !empty($_GET['art'])) {
    $get_token = htmlspecialchars($_GET['art']);
-     $requete = ' WHERE token='.$get_token;
-$article = Controller::fetchData($connect,"*","articles",$requete);
+$article = Controller::fetchData($connect,"*","articles","WHERE token=?",[$get_token]);
 var_dump($article);
-   if(sizeof($article) == 1) {
+   if($article) {
       $titre = $article['titre'];
       $contenu = $article['contenu'];
       $publicationDate;
