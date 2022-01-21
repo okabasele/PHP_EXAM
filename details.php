@@ -5,6 +5,7 @@ require_once 'class/util.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
+session_start();
 
 if(isset($_GET['art']) && !empty($_GET['art'])) {
    $get_token = htmlspecialchars($_GET['art']);

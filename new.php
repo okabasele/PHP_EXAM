@@ -15,7 +15,7 @@ require_once 'class/util.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
-
+session_start();
 // define variables and set to empty values
 $titleErr = "";
 $title =  "";
