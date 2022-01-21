@@ -90,7 +90,7 @@ if (isset($registered)) {
 			swal("Welcome!", "Now you can sign in.", "success");
 			console.log("Auth ok")
 			</script>';
-			Util::redirect("./auth/login.php");
+			Util::redirect("login.php");
 			break;
 	}
 }
