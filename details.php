@@ -1,42 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<?php
+require_once 'class/database-connection.php';
+require_once 'class/controller.php';
+require_once 'class/util.php';
+//Récuperer la connection à la bdd
+$dbconnect = Util::getDatabaseConnection();
+$connect = $dbconnect->conn;
+
+if(isset($_GET['art']) && !empty($_GET['art'])) {
+   $get_token = htmlspecialchars($_GET['art']);
+     $requete = ' WHERE token='.$get_token;
+$article = Controller::fetchData($connect,"*","articles",$requete);
+var_dump($article);
+   if(sizeof($article) == 1) {
+      $titre = $article['titre'];
+      $contenu = $article['contenu'];
+      $publicationDate;
+      $auteur;
+   } else {
+       //redirection acceuil
+       Util::redirect("home.php");
+      die('Cet article n\'existe pas !');
+   }
+} else {
+   die('Erreur');
+}
+?>
+<!DOCTYPE html>
 <html>
 <head>
-<title>View Records</title>
+   <title>Accueil</title>
+   <meta charset="utf-8">
 </head>
 <body>
-<?php
-
-include('config.php');
-
-$result = mysql_query("SELECT * FROM articles")
-or die(mysql_error());
-
-echo "<table border='1' cellpadding='10'>";
-echo "<tr>
-<th><font color='Red'>Id</font></th>
-<th><font color='Red'>Name</font></th>
-<th><font color='Red'>Address</font></th>
-<th><font color='Red'>City</font></th>
-<th><font color='Red'>Edit</font></th>
-<th><font color='Red'>Delete</font></th>
-</tr>";
-
-while($row = mysql_fetch_array( $result ))
-{
-
-echo "<tr>";
-echo '<td><b><font color="#663300">' . $row['id'] . '</font></b></td>';
-echo '<td><b><font color="#663300">' . $row['name'] . '</font></b></td>';
-echo '<td><b><font color="#663300">' . $row['address'] . '</font></b></td>';
-echo '<td><b><font color="#663300">' . $row['city'] . '</font></b></td>';
-echo '<td><b><font color="#663300"><a href="edit.php?id=' . $row['id'] . '">Edit</a></font></b></td>';
-echo '<td><b><font color="#663300"><a href="delete.php?id=' . $row['id'] . '">Delete</a></font></b></td>';
-echo "</tr>";
-
-}
-
-echo "</table>";
-?>
-<p><a href="insert.php">Insert new record</a></p>
+   <h1><?php echo $titre ?></h1>
+   <p><?php echo $contenu ?></p>
 </body>
 </html>

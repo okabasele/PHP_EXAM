@@ -13,8 +13,8 @@ $connect = $dbconnect->conn;
 // en utilisant les données entrées dans le formulaire
 if (isset($_POST['register'])) {
 	if ($_POST['register'] === "send") {
-		$email = htmlspecialchars($_POST['email']);
-		$user = htmlspecialchars($_POST['username']);
+		$email = Util::testInput($_POST['email']);
+		$user = Util::testInput($_POST['username']);
 		$password = $_POST['password'];
 		$password2 = $_POST['passwordConfirm'];
 		$token = Util::generateToken(20); //on crée un token d'authentification unique pour l'utilisateur
