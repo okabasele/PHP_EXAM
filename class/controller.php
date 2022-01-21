@@ -16,7 +16,7 @@ class Controller
     }
 
     //Insérer des données
-    public static function insertData(mysqli $connect, string $table, string $conditions, array $values = null): bool
+    public static function insertData(mysqli $connect, string $table, string $conditions, array $values = null): mysqli_result|bool
     {
         return self::sendQuery($connect, "INSERT INTO $table SET $conditions", $values);
     }
@@ -34,10 +34,9 @@ class Controller
 
         return false;
     }
+        //Modifier des données
+        public static function updateData(mysqli $connect, string $data, string $table, string $conditions, array $values = null): mysqli_result|bool
+        {
+            return self::sendQuery($connect, "UPDATE $data FROM $table $conditions", $values);
+        }
 }
-/*
-"SELECT username FROM users WHERE username=Nesrine";
-"SELECT username FROM users WHERE username=?"."Nesrine";
-Controller::fetchData($connect,"username","users","WHERE email=?",["nesrine@gmail.com"]);
-"INSERT INTO articles SET title='bonjour';
-*/

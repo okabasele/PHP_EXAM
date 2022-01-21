@@ -10,29 +10,35 @@ session_start();
 if(isset($_GET['art']) && !empty($_GET['art'])) {
    $get_token = htmlspecialchars($_GET['art']);
 $article = Controller::fetchData($connect,"*","articles","WHERE token=?",[$get_token]);
-var_dump($article);
-   if($article) {
-      $titre = $article['titre'];
-      $contenu = $article['contenu'];
-      $publicationDate;
-      $auteur;
-   } else {
-       //redirection acceuil
-       Util::redirect("home.php");
-      die('Cet article n\'existe pas !');
-   }
+var_dump($article); //affiche les tableaux
+if($article) {
+    $titre = $article['title'];
+    $contenu = $article['description'];
+    $publicationDate = $article['publicationDate'];
+    $auteur = $article['idUsers'];
+   
+ } else {
+     //redirection acceuil
+     Util::redirect("home.php");
+    die('Cet article n\'existe pas !');
+ }
 } else {
-   die('Erreur');
+ die('Erreur');
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Accueil</title>
-   <meta charset="utf-8">
+ <title>Accueil</title>
+ <meta charset="utf-8">
 </head>
 <body>
-   <h1><?php echo $titre ?></h1>
-   <p><?php echo $contenu ?></p>
+ <h1><?php echo $titre ?></h1>
+ <p><?php echo $contenu ?></p>
+ <p><?php echo $publicationDate ?></p>
+ <p><?php echo $auteur ?></p>
+
+ <button name="edit" type="submit" value="send">Editer</button>
+ 
 </body>
 </html>
