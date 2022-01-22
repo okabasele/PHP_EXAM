@@ -13,12 +13,13 @@ require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
-//INC
+//NAVBAR
 require_once 'inc/navbar.php';
 //CSS
 require_once 'assets/css/style-navbar.php';
 require_once 'assets/css/style-home.php';
-
+//BOOTSTRAP
+require_once 'inc/bootstrap.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
@@ -35,15 +36,9 @@ $connect = $dbconnect->conn;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
-    <!-- BOOTSTRAP ICONS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <!-- BOOTSTRAP CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- BOOTSTRAP JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 
-<body style="background-color:bisque;">
+<body>
 
     <div class="container d-flex justify-content-center">
         <div class="left-side">
@@ -67,7 +62,7 @@ $connect = $dbconnect->conn;
                                         </div>
                                         <div class="text-sm op-5">';
                     if ($cat) {
-                        echo '<a class="text-black mr-2" href="' . $cat["id"] . '">' . $cat["name"] . '</a>';
+                        echo '<a class="text-black mr-2" href="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
                     }
                     echo '</div>
                                 </div>

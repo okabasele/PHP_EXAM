@@ -1,4 +1,7 @@
 <style>
+    body{
+        background-color:bisque !important;
+    }
     .container {
         padding: 10px 0;
     }
@@ -35,7 +38,7 @@
     }
 
     #carouselExampleControls {
-        height: 5%;
+        height: 30%;
     }
 
     .cats li {

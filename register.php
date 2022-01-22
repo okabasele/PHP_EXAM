@@ -41,8 +41,8 @@ if (isset($_POST['login'])) {
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<input id="regUid" name="username" placeholder="USERNAME" type="text" required>
 		<input id="regEmail" name="email" placeholder="EMAIL" type="text" required>
-		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" required>
-		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" required>
+		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" minlength="8" required>
+		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" minlength="8" required>
 		<button name="register" type="submit" value="send">SIGN UP</button>
 		<div>
 			By clicking the Sign up button you agree to our <a href="">Terms and Conditions</a> and <a href="">Policy Privacy</a>

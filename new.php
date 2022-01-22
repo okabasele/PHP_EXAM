@@ -14,6 +14,8 @@
   <?php
   require_once 'class/database-connection.php';
   require_once 'class/controller.php';
+  require_once 'class/categorie.php';
+  require_once 'class/article.php';
   require_once 'class/util.php';
   //Récuperer la connection à la bdd
   $dbconnect = Util::getDatabaseConnection();
@@ -43,19 +45,23 @@
     } else {
       $description = Util::testInput($_POST["description"]);
     }
-    if ($_POST['publish'] === "send") {
-      $array = Controller::fetchData($connect, "idUsers", "users", "WHERE token=?", [$_SESSION['token']]);
-      $idAuthor = $array["idUsers"];
-      $token = Util::generateToken(20);
-      $publish = Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description, $dateToAdd, $idAuthor, $token]);
-      //redirection vers details
-        Util::redirect("http://localhost/php_exam/details.php?art=$token");
-      
-    }
     if (empty($_POST["categories"])) {
       $categoriesErr = "Please select a categorie";
     } else {
       $categories = Util::testInput($_POST["categories"]);
+    }
+    if ($_POST['publish'] === "send") {
+      //ajout article
+      $array = Controller::fetchData($connect, "idUsers", "users", "WHERE token=?", [$_SESSION['token']]);
+      $idAuthor = $array["idUsers"];
+      $token = Util::generateToken(20);
+      $publish = Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description, $dateToAdd, $idAuthor, $token]);
+      //ajout article id dans la table categories
+      $artID = Article::getArticleByToken($connect,$token)["idArticles"];
+      Categorie::insertArticleIdIntoCategorie($connect,$categories,$artID);
+      //redirection vers details
+        Util::redirect("http://localhost/php_exam/details.php?art=$token");
+      
     }
   }
   ?>
@@ -69,12 +75,12 @@
     <br><br>
     <div>
       Categories:
-      <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "health") echo "checked"; ?> value="health">Health
-      <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "politics") echo "checked"; ?> value="politics">Politics
-      <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "environment") echo "checked"; ?> value="environment">Environment
-      <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "beauty") echo "checked"; ?> value="beauty">Beauty
-      <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "fashion") echo "checked"; ?> value="fashion">Fashion
-      <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "food") echo "checked"; ?> value="food">Food
+      <?php
+      $arrayCat = Controller::fetchData($connect,"id,name","categories","");
+      foreach ($arrayCat as $cat) {
+        echo '<input type="radio" name="categories" value="'.$cat["id"].'">'.ucfirst($cat["name"]);
+      }
+      ?>
       <span class="error">* <?php echo $categoriesErr; ?></span>
       <br><br>
     </div>

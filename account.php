@@ -6,6 +6,7 @@ require_once 'class/article.php';
 require_once 'class/categorie.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
+require_once 'assets/css/style-account.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
@@ -79,6 +80,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
 <body>
     <div class="container">
+      <div class="card">
 
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 

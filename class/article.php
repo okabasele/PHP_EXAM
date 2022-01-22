@@ -11,7 +11,7 @@ class Article extends Controller
         if ($categories) {
             foreach ($categories as $cat) {
                 foreach ($cat["articles"] as $article) {
-                    if ($article["id"] == $artID) {
+                    if ($article["idArticles"] == $artID) {
                         return $cat;
                     }
                 }
@@ -22,5 +22,10 @@ class Article extends Controller
     static function getAllArticlesByUserID(mysqli $connect,int $userID) : array|false
     {
         return self::fetchData($connect,"*","articles","WHERE idUsers=?",[$userID]);
+    }
+
+    static function getArticleByToken($connect,$token) : array|false
+    {
+        return self::fetchData($connect, "*", "articles", "WHERE token=?", [$token]);
     }
 }

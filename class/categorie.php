@@ -39,6 +39,8 @@ class Categorie extends Controller
     }
 
 
+
+
     static function getAllCategories(mysqli $connect): array|false
     {
         $categories = self::fetchData($connect, "*", "categories", "");
@@ -53,6 +55,20 @@ class Categorie extends Controller
                 $tmpCat = [];
             }
             return $allCat;
+        }
+        return false;
+    }
+
+    static function getCategorieByID(mysqli $connect, int $catID): array|false
+    {
+        $cat = self::fetchData($connect, "*", "categories", "WHERE id=?", [$catID]);
+        if ($cat) {
+            $arrayCat = [];
+            $arrayCat["id"] = $cat["id"];
+            $arrayCat["name"] = $cat["name"];
+            $arrayCat["articles"] = self::getAllArticlesByCategorieID($connect, $catID);
+
+            return $arrayCat;
         }
         return false;
     }
