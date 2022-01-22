@@ -6,6 +6,7 @@ require_once 'class/article.php';
 require_once 'class/categorie.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
+require_once 'inc/bootstrap.php';
 require_once 'assets/css/style-account.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
@@ -119,7 +120,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             if($articles){
             foreach ($articles as $art) {
                 $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                echo ' <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                echo ' <div class="row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
                                 <div class="row align-items-center">
                                     <div class=" mb-3 mb-sm-0">
                                         <h5>

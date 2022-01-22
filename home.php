@@ -48,7 +48,7 @@ $connect = $dbconnect->conn;
                 foreach ($articles as $art) {
                     $user = User::getUserByID($connect, $art["idUsers"]);
                     $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                    echo ' <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                    echo ' <div class="article-block card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
                                 <div class="row align-items-center">
                                     <div class=" mb-3 mb-sm-0">
                                         <h5>
@@ -73,8 +73,40 @@ $connect = $dbconnect->conn;
                 ?>
             </div>
             <div class="pagination">
+                <nav aria-label="...">
+                    <ul class="pagination" id="pagin">
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                        <?php 
+                        $sizeArticles = sizeof($articles);
+                        $maxPage = 4;
+                        $sizePage = ceil($sizeArticles/$maxPage);
+                        for ($i = 0; $i < $sizePage; $i++) {
+                            if ($i == 0) {
+                                echo '<li class="page-item active"><a class="page-link" href="#">'.($i+1).'</a></li> ';
+                    
+                            } else {
+                                echo '<li class="page-item"><a class="page-link" href="#">'.($i+1).'</a></li> ';
+                            }
+                        }
 
+                        ?>
+                        <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item active">
+                            <span class="page-link">
+                                2
+                                <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+
         </div>
         <div class="right-side">
 
@@ -188,6 +220,7 @@ $connect = $dbconnect->conn;
 </body>
 <?php
 require_once "assets/js/js-home.php";
+require_once "assets/js/js-pagination.php";
 ?>
 
 </html>
