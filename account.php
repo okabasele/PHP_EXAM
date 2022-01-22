@@ -2,30 +2,33 @@
 require_once 'class/database-connection.php';
 require_once 'class/util.php';
 require_once 'class/controller.php';
+require_once 'class/article.php';
+require_once 'class/categorie.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 session_start();
-
+$articles = "";
 $name = "";
 if (isset($_GET['u']) && !empty($_GET['u'])) {
-  $get_token = htmlspecialchars($_GET['u']);
-  $userData = User::getUserByToken($connect,$get_token);
-  $name = $userData["username"];
-  $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
-  var_dump($articles);}
+    $get_token = htmlspecialchars($_GET['u']);
+    $userData = User::getUserByToken($connect, $get_token);
+    $name = $userData["username"];
+    $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+    //   var_dump($articles);
+}
 
-  // for ($i=0; $i < ; $i++) { 
-  //     # code...
-  // }
+// for ($i=0; $i < ; $i++) { 
+//     # code...
+// }
 
-  if($idUser == $idAuteur){
-      echo $name;
-      echo $userData;
-      echo $articles;
-  }
+//   if($idUser == $idAuteur){
+//       echo $name;
+//       echo $userData;
+//       echo $articles;
+//   }
 
 
 
@@ -77,12 +80,6 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 <body>
     <div class="container">
 
-
-    
-    <h1>Your Articals</h1>
-    <article class="<?php echo $articles ?>">
-    </article>
-
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
             Name: <input type="text" name="name" value="<?php echo $name; ?>">
@@ -108,11 +105,44 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             </div>
             <br><br>
             <button name="modifie" type="submit" value="send">MODIFIER</button>
+        </form>
+
+        <div class="articles">
+
+            <h1>Your Articles</h1>
+            <?php
+            $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+
+            //parcourt du tableau "$articles"
+            foreach ($articles as $art) {
+                $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                echo ' <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                                <div class="row align-items-center">
+                                    <div class=" mb-3 mb-sm-0">
+                                        <h5>
+                                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                        </h5>
+                                        <p class="text-sm">
+                                        <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
+                                        <a class="text-black" href="account.php?u=' . $userData["token"] . '">' . $userData["username"] . '</a></p>
+                                        <div class="text-muted">
+                                        <p class="paragraph">' . $art["description"] . '</p>
+                                        </div>
+                                        <div class="text-sm op-5">';
+                if ($cat) {
+                    echo '<a class="text-black mr-2" href="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                }
+                echo '</div>
+                                </div>
+                            </div>
+                            </div>';
+            }
+
+            ?>
+
+        </div>
 </body>
-</form>
-<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-</form>
-</div>
+
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
