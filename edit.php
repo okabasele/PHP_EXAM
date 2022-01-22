@@ -17,47 +17,50 @@ $categories = "";
 $categoriesErr = "";
 //quand on essaye d'aller sur la page
 $modeEdition = 0;
-if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
+if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
     $modeEdition = 1;
     $editToken = htmlspecialchars($_GET["edit"]);
     $editArticle = Controller::fetchData($connect, "*", "articles", "WHERE token=?", [$editToken]);
 
     if ($editArticle) {
-        $titre = $editArticle['title'];
-        $contenu = $editArticle['description'];
-        //quand tu clique sur le boutton
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            //VERIF INPUT
-            if (empty($_POST["title"])) {
-                $titleErr = "Name is required";
-            } else {
-                $title = Util::testInput($_POST["title"]);
-                // check if name only contains letters and whitespace
-                if (!preg_match("/^[a-zA-Z-' ]*$/", $title)) {
-                    $titleErr = "Only letters and white space allowed";
-                }
-            }
-            if (empty($_POST["description"])) {
-                $description = "";
-            } else {
-                $description = Util::testInput($_POST["description"]);
-            }
-            if (empty($_POST["categories"])) {
-                $categoriesErr = "Please select a categorie";
-            } else {
-                $categories = Util::testInput($_POST["categories"]);
-            }
+        $title = $editArticle['title'];
+        $description = $editArticle['description'];
 
-            //modifier l'article
-            if ($_POST['edit'] === "send") {
-                $edit = Controller::updateData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?", [$title, $description, $dateToAdd, $idAuthor]);
-                //reirection vers details
-                Util::redirect("details.php?art=.$editToken.");
-            }
+        //quand tu clique sur le boutton
+    } else {
+        die('Erreur :l\'article concerné n\'existe pas...');
+    }
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    //VERIF INPUT
+    if (empty($_POST["title"])) {
+        $titleErr = "Name is required";
+    } else {
+        $title = Util::testInput($_POST["title"]);
+        // check if name only contains letters and whitespace
+        if (!preg_match("/^[a-zA-Z-' ]*$/", $title)) {
+            $titleErr = "Only letters and white space allowed";
         }
     }
-} else {
-    die('Erreur :l\'article concerné n\'existe pas...');
+    if (empty($_POST["description"])) {
+        $description = "";
+    } else {
+        $description = Util::testInput($_POST["description"]);
+    }
+    if (empty($_POST["categories"])) {
+        $categoriesErr = "Please select a categorie";
+    } else {
+        $categories = Util::testInput($_POST["categories"]);
+    }
+
+    //modifier l'article
+    var_dump($_POST);
+    $editToken = $_POST["editToken"];
+    echo $editToken;
+    if ($_POST['edit'] === "send") {
+        $edit = Controller::updateData($connect, "articles", "title=\"".$title."\",description=\"".$description."\",publicationDate=\"".$dateToAdd."\" WHERE token=\"".$editToken."\"");
+        Util::redirect("http://localhost/php_exam/details.php?art=$editToken");
+    }
 }
 
 ?>
@@ -74,11 +77,12 @@ if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
     <h2>Edition</h2>
     <p><span class="error">* required field</span></p>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        Title: <input type="text" name="title" value="<?php echo $titre ?>" required>
+        Title: <input type="text" name="title" value="<?php echo $title ?>" required>
         <span class="error">* <?php echo $titleErr; ?></span>
         <br><br>
-        Description: <textarea name="description" rows="20" cols="70"><?php echo $contenu ?></textarea>
+        Description: <textarea name="description" rows="20" cols="70"><?php echo $description ?></textarea>
         <br><br>
+        <input type="hidden" name="editToken" value="<?php echo $editToken?>">
         <div>
             Categories:
             <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "health") echo "checked"; ?> value="health">Health
