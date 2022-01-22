@@ -11,15 +11,15 @@ session_start();
 
 //quand on essaye d'aller sur la page
 $modeEdition = 0;
-if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
+if (isset($_GET["u"]) && !empty($_GET["u"])) {
     $modeEdition = 1;
-    $editToken = htmlspecialchars($_GET["edit"]);
-    $editAccount = Controller::fetchData($connect, "*", "users", "WHERE token=?", [$editToken]);
+    $userToken = htmlspecialchars($_GET["u"]);
+    $userAccount = Controller::fetchData($connect, "*", "users", "WHERE token=?", [$userToken]);
 
-    if ($editAccount) {
-        $name = $editAccount['usermane'];
-        $email = $editAccount['email'];
-        $password = $editAccount['password'];
+    if ($userAccount) {
+        $name = $userAccount['username'];
+        $email = $userAccount['email'];
+        $password = $userAccount['password'];
         //quand tu clique sur le boutton
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -58,19 +58,28 @@ if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
     <div class="container">
 
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <input id="name" name="username" placeholder="USERNAME" type="text" required>
-            <input id="password" name="password" placeholder="PASSWORD" type="password" required>
-            <p>Forgot password?</p>
-            <button name="modifie" type="submit" value="send">MODIFIER</button>
+
             Name: <input type="text" name="name" value="<?php echo $name; ?>">
             <br><br>
-            Email:E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
+            E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
             <br><br>
             <div>
-                Password:
-                <label for="pass">Password (8 characters minimum):</label>
+
+                <label for="pass">Current Password:</label>
                 <input type="password" id="pass" name="password" minlength="8" required>
             </div>
+            <div>
+
+                <label for="pass">New Password:</label>
+                <input type="password" id="pass" name="password" minlength="8" required>
+            </div>
+            <div>
+
+                <label for="pass">New Password confirmation:</label>
+                <input type="password" id="pass" name="password" minlength="8" required>
+            </div>
+
+            <button name="modifie" type="submit" value="send">MODIFIER</button>
 </body>
 </form>
 <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
