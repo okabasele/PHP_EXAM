@@ -116,6 +116,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
 
             //parcourt du tableau "$articles"
+            if($articles){
             foreach ($articles as $art) {
                 $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
                 echo ' <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
@@ -139,6 +140,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
                             </div>
                             </div>';
             }
+        }
 
             ?>
 
