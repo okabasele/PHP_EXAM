@@ -9,6 +9,26 @@ $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 session_start();
 
+$name = "";
+if (isset($_GET['u']) && !empty($_GET['u'])) {
+  $get_token = htmlspecialchars($_GET['u']);
+  $userData = User::getUserByToken($connect,$get_token);
+  $name = $userData["username"];
+  $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+  var_dump($articles);}
+
+  // for ($i=0; $i < ; $i++) { 
+  //     # code...
+  // }
+
+  if($idUser == $idAuteur){
+      echo $name;
+      echo $userData;
+      echo $articles;
+  }
+
+
+
 //quand on essaye d'aller sur la page
 $modeEdition = 0;
 if (isset($_GET["u"]) && !empty($_GET["u"])) {
@@ -28,7 +48,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
-            $account = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
+            $account = User::updateData($connect, $_POST['username'], $_POST['password']);
         }
     }
 }
@@ -57,6 +77,12 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 <body>
     <div class="container">
 
+
+    
+    <h1>Your Articals</h1>
+    <article class="<?php echo $articles ?>">
+    </article>
+
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
             Name: <input type="text" name="name" value="<?php echo $name; ?>">
@@ -68,17 +94,19 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
                 <label for="pass">Current Password:</label>
                 <input type="password" id="pass" name="password" minlength="8" required>
             </div>
+            <br><br>
             <div>
 
                 <label for="pass">New Password:</label>
                 <input type="password" id="pass" name="password" minlength="8" required>
             </div>
+            <br><br>
             <div>
 
                 <label for="pass">New Password confirmation:</label>
                 <input type="password" id="pass" name="password" minlength="8" required>
             </div>
-
+            <br><br>
             <button name="modifie" type="submit" value="send">MODIFIER</button>
 </body>
 </form>
