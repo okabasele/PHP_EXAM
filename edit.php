@@ -1,5 +1,12 @@
 <?php
+require_once 'class/database-connection.php';
+require_once 'class/controller.php';
+require_once 'class/util.php';
+//Récuperer la connection à la bdd
+$dbconnect = Util::getDatabaseConnection();
+$connect = $dbconnect->conn;
 session_start();
+
 // define variables and set to empty values
 $titleErr = "";
 $title =  "";
@@ -15,9 +22,9 @@ if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
     $editToken = htmlspecialchars($_GET["edit"]);
     $editArticle = Controller::fetchData($connect, "*", "articles", "WHERE token=?", [$editToken]);
 
-
     if ($editArticle) {
-        $titre = $editArticle['titre'];
+        $titre = $editArticle['title'];
+        $contenu = $editArticle['description'];
         //quand tu clique sur le boutton
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //VERIF INPUT
@@ -48,9 +55,9 @@ if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
                 Util::redirect("details.php?art=.$editToken.");
             }
         }
-    } else {
-        die('Erreur :l\'article concerné n\'existe pas...');
     }
+} else {
+    die('Erreur :l\'article concerné n\'existe pas...');
 }
 
 ?>
@@ -64,26 +71,27 @@ if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
 </head>
 
 <body>
-<h2>Edition</h2>
-<p><span class="error">* required field</span></p>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-  Title: <input type="text" name="title" required>
-  <span class="error">* <?php echo $titleErr;?></span>
-  <br><br>
-  Description: <textarea name="description" rows="20" cols="70"></textarea>
-  <br><br>
-  <div>
-    Categories:
-    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="health") echo "checked";?> value="health">Health
-    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="politics") echo "checked";?> value="politics">Politics
-    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="environment") echo "checked";?> value="environment">Environment
-    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="beauty") echo "checked";?> value="beauty">Beauty
-    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="fashion") echo "checked";?> value="fashion">Fashion
-    <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"]=="food") echo "checked";?> value="food">Food
-    <span class="error">* <?php echo $categoriesErr;?></span>
-    <br><br>
-  </div>
-  <button name="edit" type="submit" value="send">Update</button>
-</form>
-  </body>
+    <h2>Edition</h2>
+    <p><span class="error">* required field</span></p>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        Title: <input type="text" name="title" value="<?php echo $titre ?>" required>
+        <span class="error">* <?php echo $titleErr; ?></span>
+        <br><br>
+        Description: <textarea name="description" rows="20" cols="70"><?php echo $contenu ?></textarea>
+        <br><br>
+        <div>
+            Categories:
+            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "health") echo "checked"; ?> value="health">Health
+            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "politics") echo "checked"; ?> value="politics">Politics
+            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "environment") echo "checked"; ?> value="environment">Environment
+            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "beauty") echo "checked"; ?> value="beauty">Beauty
+            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "fashion") echo "checked"; ?> value="fashion">Fashion
+            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "food") echo "checked"; ?> value="food">Food
+            <span class="error">* <?php echo $categoriesErr; ?></span>
+            <br><br>
+        </div>
+        <button name="edit" type="submit" value="send">Update</button>
+    </form>
+</body>
+
 </html>

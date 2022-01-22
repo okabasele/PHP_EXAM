@@ -35,8 +35,8 @@ class Controller
         return false;
     }
         //Modifier des données
-        public static function updateData(mysqli $connect, string $data, string $table, string $conditions, array $values = null): mysqli_result|bool
+        public static function updateData(mysqli $connect, string $table, string $conditions, array $values = null): mysqli_result|bool
         {
-            return self::sendQuery($connect, "UPDATE $data FROM $table $conditions", $values);
+            return self::sendQuery($connect, "UPDATE $table SET $conditions", $values);
         }
 }

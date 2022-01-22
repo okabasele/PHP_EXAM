@@ -9,6 +9,8 @@ session_start();
 require_once 'class/database-connection.php';
 require_once 'class/util.php';
 require_once 'class/controller.php';
+require_once 'class/article.php';
+require_once 'class/categorie.php';
 require_once 'inc/navbar.php';
 require_once 'assets/css/style-navbar.php';
 require_once 'assets/css/style-home.php';
@@ -16,6 +18,8 @@ require_once 'assets/css/style-home.php';
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 
+// $cat = Controller::fetchData($connect, "*", "categories","");
+// var_dump($cat[0]);
 // var_dump($_SESSION);
 
 ?>
@@ -42,22 +46,31 @@ $connect = $dbconnect->conn;
         <div class="left-side">
             <div class="posts">
                 <?php
+                $articles = Article::getAllArticles($connect);
+                foreach ($articles as $art) {
 
-                for ($i = 0; $i < 2; $i++) {
-
-                    echo '<div class="media forum-item">
-                <img src="https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" class="mr-3 rounded-circle" width="50" alt="User" />
-                <div class="media-body">
-                    <h6>
-                        <a>' . "Title" . '</a>
-                    </h6>
+                    echo ' <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+              <div class="row align-items-center">
+                <div class="col-md-8 mb-3 mb-sm-0">
+                  <h5>
+                    <a href="details.php?art='.$art["token"].'" class="text-primary">'.$art["title"].'</a>
+                  </h5>
+                  <p class="text-sm">
+                  <span class="op-6">Posted</span>
+                  <a class="text-black" href="#">'.$art["publicationDate"].'</a>
+                  <span class="op-6">ago by</span>
+                  <a class="text-black" href="#">KenyeW</a></p>
+                  <div class="text-muted">
                     <p>' . "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio fuga magni cupiditate laudantium quasi tenetur necessitatibus accusantium libero at aperiam sunt asperiores voluptate sed, doloribus, obcaecati minima illo ea fugiat." . '</p>
-                    <p>
-                        post by
-                        <a class="post-author" style="text-decoration: none" href="/profil?v=' . "tokenAuthor" . '">' . "Username-Author" . ' </a>
-                        <span>' . "10/10/10" . '</span>
-                    </p>
+                  
+                  </div>
+                  <div class="text-sm op-5">
+                  <a class="text-black mr-2" href="#">#C++</a>
+                  <a class="text-black mr-2" href="#">#AppStrap Theme</a>
+                  <a class="text-black mr-2" href="#">#Wordpress</a>
+                  </div>
                 </div>
+              </div>
             </div>';
                 }
 
@@ -147,22 +160,23 @@ $connect = $dbconnect->conn;
 
             <div class="side-block">
                 <div class="categories">
-                    <div class="sidebarblock">
+                    <div class="side-block">
                         <h3>Categories</h3>
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
 
                                 <?php
-                                
-                                for ($i = 0; $i < 2; $i++) {
-                                    echo '<li>
-                                    <a href="categorie.php?cat=TOKEN">CATEGORIE
-                                    <span class="badge rounded-pill bg-secondary">10</span>
-                                    </a>
-                                    </li>';
+                                $categories = Categorie::getAllCategories($connect);
+                                if ($categories) {
+                                    foreach ($categories as $cat) {
+                                        echo '<li>
+                                        <a href="categorie.php?cat=' . $cat["id"] . '">' . ucfirst($cat["name"]) . '
+                                        <span class="badge rounded-pill bg-secondary">' . sizeof($cat["articles"]) . '</span>
+                                        </a>
+                                        </li>';
+                                    }
                                 }
-
                                 ?>
                             </ul>
                         </div>
