@@ -7,7 +7,17 @@ class Article extends Controller
     }
     static function getCategorieByArticleID(mysqli $connect,int $artID) :array|false
     {
-        return self::fetchData($connect,"*")
+        $categories = Categorie::getAllCategories($connect);
+        if ($categories) {
+            foreach ($categories as $cat) {
+                foreach ($cat["articles"] as $article) {
+                    if ($article["id"] == $artID) {
+                        return $cat;
+                    }
+                }
+            }
+        }
+        return false;
     }
     static function getAllArticlesByUserID(mysqli $connect,int $userID) : array|false
     {

@@ -22,6 +22,7 @@ if($article) {
      Util::redirect("home.php");
     die('Cet article n\'existe pas !');
  }
+
 } else {
  die('Erreur');
 }
@@ -38,7 +39,13 @@ if($article) {
  <p><?php echo $publicationDate ?></p>
  <p><?php echo $auteur ?></p>
 
- <button name="edit" type="submit" value="send">Editer</button>
+ <?php
  
+ if ($idUser == $ArticleId) {
+    echo '<button><a href="edit.php?edit='.$get_token.'">Editer</a></button>';
+
+ }  else {} 
+     
+ ?>
 </body>
 </html>

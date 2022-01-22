@@ -1,13 +1,13 @@
 <?php
 class Categorie extends Controller
 {
-    static function getArticlesIDByCategorieID(mysqli $connect, int $idCat): string|false
+    static function getArticlesIDByCategorieID(mysqli $connect, int $idCat): string
     {
         $articlesID = self::fetchData($connect, "idArticles", "categories", "WHERE id=?", [$idCat]);
         if ($articlesID) {
             return $articlesID["idArticles"];
         }
-        return false;
+        return "";
     }
 
     static function insertArticleIdIntoCategorie(mysqli $connect, int $idCat, int $artID): void

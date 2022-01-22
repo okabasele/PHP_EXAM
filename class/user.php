@@ -19,7 +19,7 @@ class User extends Controller
         if (!self::isEmailValid($email)) //adresse email invalide
         {
             return -3;
-        } else if (!self::passwordMatch($password,$password2)) //mot de passe incorrect
+        } else if (!self::passwordMatch($password, $password2)) //mot de passe incorrect
         {
             return -4;
         }
@@ -95,9 +95,18 @@ class User extends Controller
     //Verifier si l'adresse mail entré est bien une adresse mail
     static function isEmailValid(string $email): bool
     {
-        if (filter_var($email,FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return true;
         }
         return false;
+    }
+
+    static function getUserByToken(mysqli $connect, string $token): array|false
+    {
+        return self::fetchData($connect, "*", "users", "WHERE token=?", [$token]);
+    }
+    static function getUserByID(mysqli $connect, int $userID): array|false
+    {
+        return self::fetchData($connect, "*", "users", "WHERE idUsers=?", [$userID]);
     }
 }
