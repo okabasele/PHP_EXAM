@@ -12,8 +12,8 @@ $categoriesErr = "";
 $modeEdition = 0;
 if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
     $modeEdition = 1;
-    $editId = htmlspecialchars($_GET["edit"]);
-    $editArticle = Controller::fetchData($connect, "*", "articles", "WHERE token=?", [$editId]);
+    $editToken = htmlspecialchars($_GET["edit"]);
+    $editArticle = Controller::fetchData($connect, "*", "articles", "WHERE token=?", [$editToken]);
 
 
     if ($editArticle) {
@@ -42,10 +42,10 @@ if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
             }
 
             //modifier l'article
-            if ($_POST['publish'] === "send") {
-                $publish = Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description, $dateToAdd, $idAuthor, $token]);
+            if ($_POST['edit'] === "send") {
+                $edit = Controller::updateData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?", [$title, $description, $dateToAdd, $idAuthor]);
                 //reirection vers details
-                Util::redirect("details.php?art=.$token.");
+                Util::redirect("details.php?art=.$editToken.");
             }
         }
     } else {
@@ -83,7 +83,7 @@ if (isset($_GET["edit"]) and !empty($_GET["edit"])) {
     <span class="error">* <?php echo $categoriesErr;?></span>
     <br><br>
   </div>
-  <button name="publish" type="submit" value="send">Publish</button>
+  <button name="edit" type="submit" value="send">Update</button>
 </form>
   </body>
 </html>
