@@ -8,7 +8,7 @@
                     <div class="page__menu menu">
                         <ul class="menu__list r-list">
                             <li class="menu__group">
-                                <a href="#0" class="menu__link r-link text-underlined">Home</a>
+                                <a href="home.php" class="menu__link r-link text-underlined">Home</a>
                             </li>
                             <li class="menu__group">
                                 <a href="#0" class="menu__link r-link text-underlined">Help</a>
@@ -47,8 +47,8 @@
                             <div class="status user">&nbsp;</div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">My Account</a></li>
-                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                            <li><a class="dropdown-item" href="account.php?u=<?php echo $_SESSION["token"]?>">My Account</a></li>
+                            <li><a class="dropdown-item" href="login.php?u=<?php echo $_SESSION["token"]?>">Log Out</a></li>
                         </ul>
                     </div>
                 </div>

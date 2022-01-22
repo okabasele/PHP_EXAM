@@ -6,21 +6,23 @@ https://www.bootdey.com/snippets/view/Forum-post-list
 https://codepen.io/melnik909/pen/VQOodQ effet menu
 */
 session_start();
+//CLASSES
 require_once 'class/database-connection.php';
 require_once 'class/util.php';
 require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
+//INC
 require_once 'inc/navbar.php';
+//CSS
 require_once 'assets/css/style-navbar.php';
 require_once 'assets/css/style-home.php';
+
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 
-// $cat = Controller::fetchData($connect, "*", "categories","");
-// var_dump($cat[0]);
 // var_dump($_SESSION);
 
 ?>
@@ -43,7 +45,7 @@ $connect = $dbconnect->conn;
 
 <body style="background-color:bisque;">
 
-    <div class="container d-flex">
+    <div class="container d-flex justify-content-center">
         <div class="left-side">
             <div class="posts">
                 <?php
@@ -52,29 +54,25 @@ $connect = $dbconnect->conn;
                     $user = User::getUserByID($connect, $art["idUsers"]);
                     $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
                     echo ' <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-              <div class="row align-items-center">
-                <div class="col-md-8 mb-3 mb-sm-0">
-                  <h5>
-                    <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
-                  </h5>
-                  <p class="text-sm">
-                  <span class="op-6">Posted ' . $art["publicationDate"] . ' ago by</span>
-                  <a class="text-black" href="account.php?u=' . $user["token"] . '">' . $user["username"] . '</a></p>
-                  <div class="text-muted">
-                    <p>' . "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio fuga magni cupiditate laudantium quasi tenetur necessitatibus accusantium libero at aperiam sunt asperiores voluptate sed, doloribus, obcaecati minima illo ea fugiat." . '</p>
-                  
-                  </div>
-                  <div class="text-sm op-5">
-                  ';
+                                <div class="row align-items-center">
+                                    <div class=" mb-3 mb-sm-0">
+                                        <h5>
+                                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                        </h5>
+                                        <p class="text-sm">
+                                        <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
+                                        <a class="text-black" href="account.php?u=' . $user["token"] . '">' . $user["username"] . '</a></p>
+                                        <div class="text-muted">
+                                        <p class="paragraph">' .$art["description"]. '</p>
+                                        </div>
+                                        <div class="text-sm op-5">';
                     if ($cat) {
-
                         echo '<a class="text-black mr-2" href="' . $cat["id"] . '">' . $cat["name"] . '</a>';
                     }
-                    echo '
-                  </div>
-                </div>
-              </div>
-            </div>';
+                    echo '</div>
+                                </div>
+                            </div>
+                            </div>';
                 }
 
                 ?>
@@ -190,5 +188,8 @@ $connect = $dbconnect->conn;
     </div>
 
 </body>
+<?php
+require_once "assets/js/js-home.php";
+?>
 
 </html>

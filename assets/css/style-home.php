@@ -8,7 +8,12 @@
     }
 
     .right-side {
-        width: 50%;
+        width: 40%;
+        margin-left: 5%;
+    }
+    .left-side{
+        
+        width: 60%;
     }
 
     .date-news {
@@ -30,7 +35,7 @@
     }
 
     #carouselExampleControls {
-        height: 10%;
+        height: 5%;
     }
 
     .cats li {
