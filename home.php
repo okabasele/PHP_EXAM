@@ -63,7 +63,7 @@ $connect = $dbconnect->conn;
                                         <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
                                         <a class="text-black" href="account.php?u=' . $user["token"] . '">' . $user["username"] . '</a></p>
                                         <div class="text-muted">
-                                        <p class="paragraph">' .$art["description"]. '</p>
+                                        <p class="paragraph">' . $art["description"] . '</p>
                                         </div>
                                         <div class="text-sm op-5">';
                     if ($cat) {
@@ -82,7 +82,10 @@ $connect = $dbconnect->conn;
             </div>
         </div>
         <div class="right-side">
+
             <div class="side-block">
+                <h3>Annoncements</h3>
+                <div class="divline"></div>
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -161,27 +164,27 @@ $connect = $dbconnect->conn;
 
             <div class="side-block">
                 <div class="categories">
-                    <div class="side-block">
-                        <h3>Categories</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <ul class="cats">
 
-                                <?php
-                                $categories = Categorie::getAllCategories($connect);
-                                if ($categories) {
-                                    foreach ($categories as $cat) {
-                                        echo '<li>
+                    <h3>Categories</h3>
+                    <div class="divline"></div>
+                    <div class="blocktxt">
+                        <ul class="cats">
+
+                            <?php
+                            $categories = Categorie::getAllCategories($connect);
+                            if ($categories) {
+                                foreach ($categories as $cat) {
+                                    echo '<li>
                                         <a href="categorie.php?cat=' . $cat["id"] . '">' . ucfirst($cat["name"]) . '
                                         <span class="badge rounded-pill bg-secondary">' . sizeof($cat["articles"]) . '</span>
                                         </a>
                                         </li>';
-                                    }
                                 }
-                                ?>
-                            </ul>
-                        </div>
+                            }
+                            ?>
+                        </ul>
                     </div>
+
                 </div>
             </div>
         </div>
