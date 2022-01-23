@@ -95,7 +95,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             <?php
 
             if ($user["token"] === $userAccount["token"]) {
-                var_dump($user);
+                // var_dump($user);
                 echo '
                         <div class="left">
                         <form method="POST" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '";">
