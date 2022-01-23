@@ -3,6 +3,7 @@ require_once 'class/database-connection.php';
 require_once 'class/controller.php';
 require_once 'class/util.php';
 require_once 'class/user.php';
+require_once 'assets/css/style-details.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
