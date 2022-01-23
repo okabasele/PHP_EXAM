@@ -56,6 +56,8 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
             $update = User::updateAccount($connect, $_POST['name'], $_POST['email'], $_POST['prevPassword'], $_POST['newPassword'], $_POST['confPassword'], $_POST['tokenUser']);
+            echo $update;
+            var_dump($_POST);
         }
     }
 }
@@ -91,7 +93,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             </li>
             <div class="card">
                 <div class="left">
-                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <form method="POST">
                         <input type="hidden" name="tokenUser" value="<?php echo $userToken ?>">
                         Name: <input id="upName" type="text" name="name" value="<?php echo $name; ?>">
                         <br><br>
@@ -178,23 +180,22 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <?php
 require_once "assets/js/js-pagination.php";
-?>
-<?php
-//update
+
 if (isset($update)) {
     switch ($update) {
         case -1:
             echo '<script>swal("Authentification failed", "The email is not valid.", "error");
-			logUid.classList.add("inputError");
-			</script>';
+            logUid.classList.add("inputError");
+            </script>';
             break;
         case -2:
             echo '<script>
-			swal("Authentification failed", "Your current password is incorrect.", "error");
-			logPwd.classList.add("inputError");
-			</script>';
+            swal("Authentification failed", "Your current password is incorrect.", "error");
+            logPwd.classList.add("inputError");
+            </script>';
             break;
         case -3:
             echo '<script>
@@ -206,7 +207,10 @@ if (isset($update)) {
             echo '<script>
                     swal("Update", "Your data have been succesfully updated.", "success");
                     </script>';
-            Util::redirect("account.php?u=" . $_POST['tokenUser']);
+            // Util::redirect("account.php?u=".$_POST['tokenUser']);
+            break;
+        case 0:
+            Util::redirect("account.php?u=".$_POST['tokenUser']);
             break;
     }
 }
