@@ -64,15 +64,8 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
                                     <div class="row align-items-center">
                                     ';
                         echo '              <div class=" mb-3 mb-sm-0">
-                          <div style="display: flex; justify-content: space-between; flex-direction: row-reverse;">
-                          <div style="display: flex; justify-content: center; ">
-                        <a style="margin-right:10px;" href="edit.php?edit=' . $art["token"] . '"><button class="btn btn-light"><i class="bi bi-arrow-clockwise"></i></button></a>';
-                        echo '<form class="form1" method="post" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">
-                                       <input type="hidden" name="articleToken" value="' . $art["token"] . '">
-                                       <input type="hidden" name="del" value="delete">
-                                       <button name="delete" class="buttondelete btn btn-warning" type="submit" value="delete"><i class="bi bi-trash-fill"></i></button>
-                                    </form>
-                                    </div>
+                          <div style="display: flex; justify-content: space-between;">';
+                        echo '
                                     <h5>
                                             <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
                                             </h5>
@@ -89,7 +82,7 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
                                             </div>
                                             <div class="text-sm op-5">';
                         if ($cat) {
-                            echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                            echo '<a class="text-black mr-2" href=categorie.php?cat=' . $cat["id"] . '>#' . $cat["name"] . '</a>';
                         }
                         echo '</div>
                                     </div>
@@ -103,15 +96,8 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
                                         <div class="row align-items-center">
                                         ';
                             echo '              <div class=" mb-3 mb-sm-0">
-                              <div style="display: flex; justify-content: space-between; flex-direction: row-reverse;">
-                              <div style="display: flex; justify-content: center; ">
-                            <a style="margin-right:10px;" href="edit.php?edit=' . $art["token"] . '"><button class="btn btn-light"><i class="bi bi-arrow-clockwise"></i></button></a>';
-                            echo '<form class="form1" method="post" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">
-                                           <input type="hidden" name="articleToken" value="' . $art["token"] . '">
-                                           <input type="hidden" name="del" value="delete">
-                                           <button name="delete" class="buttondelete btn btn-warning" type="submit" value="delete"><i class="bi bi-trash-fill"></i></button>
-                                        </form>
-                                        </div>
+                              <div style="display: flex; justify-content: space-between;">';
+                            echo '
                                         <h5>
                                                 <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
                                                 </h5>
@@ -128,7 +114,7 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
                                                 </div>
                                                 <div class="text-sm op-5">';
                             if ($cat) {
-                                echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                                echo '<a class="text-black mr-2" href=categorie.php?cat=' . $cat["id"] . '>#' . $cat["name"] . '</a>';
                             }
                             echo '</div>
                                         </div>

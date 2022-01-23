@@ -41,7 +41,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="account.php?u=<?php echo $_SESSION["token"]?>">My Account</a></li>
-                            <li><a class="dropdown-item" href="login.php?u=<?php echo $_SESSION["token"]?>">Log Out</a></li>
+                            <li><a class="dropdown-item" href="loginAdmin.php?u=<?php echo $_SESSION["token"]?>">Log Out</a></li>
                         </ul>
                     </div>
                 </div>

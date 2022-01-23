@@ -174,7 +174,7 @@ echo '<br><br>
                                 </h5>
                                 <div class="text-sm op-5">';
                         if ($cat) {
-                            echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                            echo '<a class="text-black mr-2" href=categorie.php?cat=' . $cat["id"] . '>#' . $cat["name"] . '</a>';
                         }
                         echo '</div></div></div></div>';
                     }
@@ -236,7 +236,7 @@ echo '<br><br>
                         </h5>
                         <div class="text-sm op-5">';
                         if ($cat) {
-                            echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                            echo '<a class="text-black mr-2" href=categorie.php?cat=' . $cat["id"] . '>#' . $cat["name"] . '</a>';
                         }
                         echo '</div></div></div></div>';
                     }
