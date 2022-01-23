@@ -15,7 +15,7 @@ body{
  box-shadow: 0 2px 6px 0 rgb(000 000 000 / 65%), 0 2px 6px 0 rgb(000 000 000 / 54%);
 }
 
-button{
+.btn{
     display: inline-block;
   padding: 10px 24px;
   font-size: 10px;
@@ -33,13 +33,13 @@ button{
 
 }
 
-button:hover {
+.btn:hover {
  background-color: black;
   color: white;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
-button:active {
+.btn:active {
   background-color: black;
   box-shadow: 0 5px #666;
   transform: translateY(4px);

@@ -22,6 +22,18 @@ if (isset($_GET['u']) && !empty($_GET['u'])) {
     //   var_dump($articles);
 }
 
+// for ($i=0; $i < ; $i++) { 
+//     # code...
+// }
+
+//   if($idUser == $idAuteur){
+//       echo $name;
+//       echo $userData;
+//       echo $articles;
+//   }
+
+
+
 //quand on essaye d'aller sur la page
 $modeEdition = 0;
 if (isset($_GET["u"]) && !empty($_GET["u"])) {
@@ -41,16 +53,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
-            //si utilisateur change username on le change
-            #code
-
-            //si utilisateur change email on le change
-            #code
-
-            //si utilisateur change le mdp on le change
-            //on verifie que current password est bien dans la bdd
-            //on verifie que le new password et confirmation sont bien pareilles
-            //on modifie le mdp
+            $account = User::updateData($connect, $_POST['username'], $_POST['password']);
         }
     }
 }
@@ -64,95 +67,39 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
-    <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
+<style>
+    input.inputError {
+        box-shadow: 0 0px 6px 0 #FB3640;
+        border-color: #FB3640;
+        background-image: url("https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png");
+        background-size: 20px;
+        background-position: 250px 10px;
+        background-repeat: no-repeat;
+    }
+</style>
 
 <body>
     <div class="container">
-        <div class="card">
-            <div class="left">
+      <div class="card">
 
-                <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-                    Name: <input type="text" name="name" value="<?php echo $name; ?>">
-                    <br><br>
-                    E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
-                    <br><br>
-                    <div>
+            Name: <input type="text" name="name" value="<?php echo $name; ?>">
+            <br><br>
+            E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
+            <br><br>
+            <div>
 
-                        <label for="pass">Current Password:</label>
-                        <input type="password" id="pass" name="password" minlength="8">
-                    </div>
-                    <br><br>
-                    <div>
-
-                        <label for="pass">New Password:</label>
-                        <input type="password" id="pass" name="password" minlength="8">
-                    </div>
-                    <br><br>
-                    <div>
-
-                        <label for="pass">New Password confirmation:</label>
-                        <input type="password" id="pass" name="password" minlength="8">
-                    </div>
-                    <br><br>
-                    <button name="modifie" type="submit" value="send">MODIFIER</button>
-                </form>
+                <label for="pass">Current Password:</label>
+                <input type="password" id="pass" name="password" minlength="8" required>
             </div>
-            <div class="right">
+            <br><br>
+            <div>
 
-                <div class="articles" style="height: 90%;">
-
-                    <h1>Your Articles</h1>
-                    <?php
-                    $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
-
-                    //parcourt du tableau "$articles"
-                    if ($articles) {
-                        foreach ($articles as $art) {
-                            $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                            echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-                        <div class="row align-items-center">
-                            <div class=" mb-3 mb-sm-0">
-                                <h5>
-                                <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
-                                </h5>
-                                <div class="text-sm op-5">';
-                            if ($cat) {
-                                echo '<a class="text-black mr-2" href="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
-                            }
-                            echo '</div>
-                        </div>
-                    </div>
-                    </div>';
-                        }
-                    }
-
-                    ?>
-
-                </div>
-                <div class="pagination">
-                    <nav aria-label="...">
-                        <ul id="pagin" class="pagination">
-                            <?php
-                            $sizeArticles = sizeof($articles);
-                            $maxPage = 4;
-                            $sizePage = ceil($sizeArticles / $maxPage);
-                            for ($i = 0; $i < $sizePage; $i++) {
-                                if ($i == 0) {
-                                    echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
-                                } else {
-                                    echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
-                                }
-                            }
-
-                            ?>
-                        </ul>
-                    </nav>
-                </div>
+                <label for="pass">New Password:</label>
+                <input type="password" id="pass" name="password" minlength="8" required>
             </div>
-<<<<<<< HEAD
             <br><br>
             <div>
 
@@ -182,7 +129,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
                                         <div class="text-sm op-5">';
                 if ($cat) {
-                    echo '<a class="text-black mr-2" href="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                    echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
                 }
                 echo '</div>
                                 </div>
@@ -193,16 +140,10 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
             ?>
 
-=======
->>>>>>> ee868492355860bbd7bbc57247d332075477db2c
         </div>
-    </div>
 </body>
 
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<?php
-require_once "assets/js/js-pagination.php";
-?>
 
 </html>
