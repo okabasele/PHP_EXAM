@@ -1,6 +1,6 @@
 <style>
     body{
-        background-color:bisque !important;
+        background-color:#D4EFF2 !important;
     }
     .container {
         padding: 10px 0;
@@ -32,7 +32,7 @@
 
     .side-block {
         padding: 10px;
-        background-color: #ffffff;
+        background-color: #86C9D6;
         border-radius: 2px;
         margin-bottom: 10px;
     }

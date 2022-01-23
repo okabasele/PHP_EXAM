@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<div class="container">
        <div class="card">
 		<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-			<input id="logUid" name="username" placeholder="USERNAME" type="text" required>
+			<input id="logUid" class="username" name="username" placeholder="USERNAME" type="text" required>
 			<input id="logPwd" name="password" placeholder="PASSWORD" type="password" required>
 			<p>Forgot password?</p>
 			<button name="login" type="submit" value="send">SIGN IN</button>
@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<input class="link" name="register" type="submit" value="Sign up">
 			</div>
 		</form>
+		</div>
 	</div>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

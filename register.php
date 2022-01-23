@@ -4,6 +4,8 @@ require_once 'class/util.php';
 require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
+require_once 'assets/css/style-register.php';
+
 
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
@@ -39,15 +41,19 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
+	<div class="card">
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-		<input id="regUid" name="username" placeholder="USERNAME" type="text" required>
+		<input style="margin-right:10px;" id="regUid" name="username" placeholder="USERNAME" type="text" required>
 		<input id="regEmail" name="email" placeholder="EMAIL" type="text" required>
-		<input id="regPwd" name="password" placeholder="PASSWORD" type="password" minlength="8" required>
-		<input id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" minlength="8" required>
-		<button name="register" type="submit" value="send">SIGN UP</button>
-		<div>
+		<div style="display: flex; justify-content:center;">
+		<input style="margin-right:10px;" id="regPwd" name="password" placeholder="PASSWORD" type="password" minlength="8" required>
+		<input  id="regPwd2" name="passwordConfirm" placeholder="PASSWORD CONFIRMATION" type="password" minlength="8" required>
+      </div>
+
+		<div class="text">
 			By clicking the Sign up button you agree to our <a href="">Terms and Conditions</a> and <a href="">Policy Privacy</a>
 		</div>
+		<button name="register" type="submit" value="send">SIGN UP</button>
 	</form>
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<div>
@@ -55,6 +61,7 @@ if (isset($_POST['login'])) {
 			<input class="link" name="login" type="submit" value="Login here">
 		</div>
 	</form>
+	
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
