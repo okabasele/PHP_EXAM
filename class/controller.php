@@ -40,9 +40,4 @@ class Controller
             return self::sendQuery($connect, "UPDATE $table SET $conditions", $values);
         }
 
-        //Supprimer des données
-        static function deleteData(mysqli $connect, string $table, string $conditions, array $values = null): mysqli_result|bool
-        {
-            return self::sendQuery($connect, "DELETE FROM $table $conditions", $values);
-        }
 }
