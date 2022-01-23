@@ -65,7 +65,16 @@ body{
   text-align:center;
 }
 .button{
-  
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: RoyalBlue;
 }
 
 </style>

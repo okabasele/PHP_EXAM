@@ -17,12 +17,13 @@ body{
     background-clip: border-box;
     border: 0.6px solid black;
     display: flex;
+    text-align:center;
   justify-content: center;
   flex-direction: row;
   padding: 50px 10px;
  border-radius: .25rem;
  margin-bottom: 1.5rem;
- box-shadow: 0 2px 6px 0 rgb(000 000 000 / 65%), 0 2px 6px 0 rgb(000 000 000 / 54%);
+box-shadow: 0 2px 6px 0 rgb(000 000 000 / 65%), 0 2px 6px 0 rgb(000 000 000 / 54%);
 }
 
 button{
@@ -57,9 +58,11 @@ button:active {
     margin-right: .5rem!important;
 }
 
-.menu__group{
-  display:flex;
-  justify-content:space-between;
+h2{
+  text-align:center;
+  font-family:sans serif;
+  font-size:200%;
 }
+
 
 </style>

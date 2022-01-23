@@ -49,11 +49,12 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 <head>
    <title>Accueil</title>
    <meta charset="utf-8">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
 <li class="menu__group">
-   <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
+   <a href="home.php" class="fa fa-home"><button class="button">Home</button></a>
  </li>
    <div class="card">
       <h1><?php echo $titre ?></h1>
