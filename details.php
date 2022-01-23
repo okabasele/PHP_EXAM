@@ -52,6 +52,9 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 </head>
 
 <body>
+<li class="menu__group">
+   <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
+ </li>
    <div class="card">
       <h1><?php echo $titre ?></h1>
       <div class="contenu"><?php echo $contenu ?></div>
