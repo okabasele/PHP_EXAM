@@ -25,19 +25,19 @@
   //Récuperer la connection à la bdd
   $dbconnect = Util::getDatabaseConnection();
   $connect = $dbconnect->conn;
-  
+
   if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
-      $user = User::getUserByToken($connect, $_SESSION["token"]);
-      if (!$user) {
-          Util::redirect("login.php");
-      } else {
-          //STYLE
-          require_once 'assets/css/style-new.php';
-      }
-  } else {
+    $user = User::getUserByToken($connect, $_SESSION["token"]);
+    if (!$user) {
       Util::redirect("login.php");
+    } else {
+      //STYLE
+      require_once 'assets/css/style-new.php';
+    }
+  } else {
+    Util::redirect("login.php");
   }
-  
+
   // define variables and set to empty values
   $titleErr = "";
   $title =  "";
@@ -74,42 +74,47 @@
       $token = Util::generateToken(20);
       $publish = Controller::insertData($connect, "articles", "title=?,description=?,publicationDate=?,idUsers=?,token=?", [$title, $description, $dateToAdd, $idAuthor, $token]);
       //ajout article id dans la table categories
-      $artID = Article::getArticleByToken($connect,$token)["idArticles"];
-      Categorie::insertArticleIdIntoCategorie($connect,$categories,$artID);
+      $artID = Article::getArticleByToken($connect, $token)["idArticles"];
+      Categorie::insertArticleIdIntoCategorie($connect, $categories, $artID);
       //redirection vers details
-        Util::redirect("http://localhost/php_exam/details.php?art=$token");
-      
+      Util::redirect("http://localhost/php_exam/details.php?art=$token");
     }
   }
   ?>
-  
+
   <h2>Add new artical</h2>
-  
+
   <div class="menu__group">
-    <a href="home.php">
+    <a href="<?php
+              if (isset($_SESSION["admin"]) && $_SESSION["admin"] && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+                echo "panelAdmin.php?u=articles";
+              } else {
+                echo "home.php";
+              }
+              ?>">
       <button class="butt"><i class="fa fa-home"></i> Home</button>
-   </a>
-   <div class="card">
-  <!-- <p><span class="error">* required field</span></p> -->
-  <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    Title: <input type="text" name="title" required>
-    <span class="error">* <?php echo $titleErr; ?></span>
-    <br><br>
-    Description: <textarea name="description" rows="20" cols="70"></textarea>
-    <br><br>
-    <div>
-      Categories:
-      <?php
-      $arrayCat = Controller::fetchData($connect,"id,name","categories","");
-      foreach ($arrayCat as $cat) {
-        echo '<input type="radio" name="categories" value="'.$cat["id"].'">'.ucfirst($cat["name"]);
-      }
-      ?>
-      <span class="error">* <?php echo $categoriesErr; ?></span>
-      <br><br>
-    </div>
-    <button name="publish" type="submit" value="send">Publish</button>
-  </form>
+    </a>
+    <div class="card">
+      <!-- <p><span class="error">* required field</span></p> -->
+      <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        Title: <input type="text" name="title" required>
+        <span class="error">* <?php echo $titleErr; ?></span>
+        <br><br>
+        Description: <textarea name="description" rows="20" cols="70"></textarea>
+        <br><br>
+        <div>
+          Categories:
+          <?php
+          $arrayCat = Controller::fetchData($connect, "id,name", "categories", "");
+          foreach ($arrayCat as $cat) {
+            echo '<input type="radio" name="categories" value="' . $cat["id"] . '">' . ucfirst($cat["name"]);
+          }
+          ?>
+          <span class="error">* <?php echo $categoriesErr; ?></span>
+          <br><br>
+        </div>
+        <button name="publish" type="submit" value="send">Publish</button>
+      </form>
 </body>
 
 </html>

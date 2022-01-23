@@ -12,15 +12,15 @@ $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 
 if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
-    $user = User::getUserByToken($connect, $_SESSION["token"]);
-    if (!$user) {
-        Util::redirect("login.php");
-    } else {
-        //STYLE
-        require_once 'assets/css/style-details.php';
-    }
+   $user = User::getUserByToken($connect, $_SESSION["token"]);
+   if (!$user) {
+      Util::redirect("login.php");
+   } else {
+      //STYLE
+      require_once 'assets/css/style-details.php';
+   }
 } else {
-    Util::redirect("login.php");
+   Util::redirect("login.php");
 }
 
 $currentUser = User::getUserByToken($connect, $_SESSION["token"]);
@@ -42,15 +42,15 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
    }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
    var_dump($_POST);
-   $article = Article::getArticleByToken($connect,$_POST["articleToken"]);
-   if (isset($_POST["del"]) && $_POST["del"]==="delete" ) {
+   $article = Article::getArticleByToken($connect, $_POST["articleToken"]);
+   if (isset($_POST["del"]) && $_POST["del"] === "delete") {
       //si c'est dans une categorie > supprime id article dans categorie
       $catArticle = Article::getCategorieByArticleID($connect, $article["idArticles"]);
       if ($catArticle) {
          Categorie::deleteArticleIdFromCategorie($connect, $catArticle["id"], $article["idArticles"]);
       }
       //supprimer article
-      article::deleteArticleByToken($connect,$_POST["articleToken"]);
+      article::deleteArticleByToken($connect, $_POST["articleToken"]);
       Util::redirect("home.php");
    }
 }
@@ -65,12 +65,18 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 </head>
 
 <body>
-<div class="menu__group">
-   <a href="home.php">
-      <button class="button"><i class="fa fa-home"></i> Home</button>
+   <div class="menu__group">
+      <a href="<?php
+               if (isset($_SESSION["admin"]) && $_SESSION["admin"] && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+                  echo "panelAdmin.php?u=articles";
+               } else {
+                  echo "home.php";
+               }
+               ?>">
+         <button class="button"><i class="fa fa-home"></i> Home</button>
 
-   </a>
- </div>
+      </a>
+   </div>
    <div class="card">
       <h1><?php echo $titre ?></h1>
       <div class="contenu"><?php echo $contenu ?></div>
@@ -80,7 +86,7 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
       <div style="display: flex; justify-content:center;">
 
          <?php
-         if ($idUser == $idAuteur) {
+         if ($idUser == $idAuteur or (isset($_SESSION["admin"]) && $_SESSION["admin"])) {
             echo '<a style="margin-right:10px;" href="edit.php?edit=' . $get_token . '"><button class="btn">Editer</button></a>';
             echo '<form id="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>
                <input type="hidden" name="articleToken" value="<?php echo $get_token ?>">
@@ -94,33 +100,34 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link data-require="sweet-alert@*" data-semver="0.4.2" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 <script>
-document.querySelector('#form1').addEventListener('submit', function(e) {
-  var form = this;
+   document.querySelector('#form1').addEventListener('submit', function(e) {
+      var form = this;
 
-  e.preventDefault(); // <--- prevent form from submitting
+      e.preventDefault(); // <--- prevent form from submitting
 
-  swal({
-      title: "Are you sure?",
-      text: "You will not be able to recover!",
-      icon: "warning",
-      buttons: [
-        'No, cancel it!',
-        'Yes, I am sure!'
-      ],
-      dangerMode: true,
-    }).then(function(isConfirm) {
-      if (isConfirm) {
-        swal({
-          title: 'Deleted!',
-          text: 'The article is successfully deleted!',
-          icon: 'success'
-        }).then(function() {
-          form.submit(); // <--- submit form programmatically
-        });
-      } else {
-        swal("Cancelled", "The article is safe :)", "info");
-      }
-    })
-});
+      swal({
+         title: "Are you sure?",
+         text: "You will not be able to recover!",
+         icon: "warning",
+         buttons: [
+            'No, cancel it!',
+            'Yes, I am sure!'
+         ],
+         dangerMode: true,
+      }).then(function(isConfirm) {
+         if (isConfirm) {
+            swal({
+               title: 'Deleted!',
+               text: 'The article is successfully deleted!',
+               icon: 'success'
+            }).then(function() {
+               form.submit(); // <--- submit form programmatically
+            });
+         } else {
+            swal("Cancelled", "The article is safe :)", "info");
+         }
+      })
+   });
 </script>
+
 </html>
