@@ -16,9 +16,7 @@ body{
     background-color: #FFFCF0;
     background-clip: border-box;
     border: 0.6px solid black;
-    display: flex;
   justify-content: center;
-  flex-direction: row;
   padding: 50px 10px;
  border-radius: .25rem;
  margin-bottom: 1.5rem;

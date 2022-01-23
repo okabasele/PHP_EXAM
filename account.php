@@ -177,15 +177,28 @@ E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
             </ul>
         </nav>
     </div>';
+                } else {
+
+                    echo '            <p>You did not create any article</p>
+                        <div style="display: flex;">
+                            <a href="new.php" style="margin-right: 10px;" class="menu__link r-link text-underlined">
+                                <button>
+                                    Click Here
+                                </button>
+                            </a>
+                            <p>
+                                to create a new article.
+                            </p>
+                        </div>';
                 }
             } else {
                 echo '            <div style="display:flex;align-items:center;justify-content:center;" class="top">
                 <p>Name : ' . $name . '</p>
             </div>
             <div class="bottom">
-                <div class="articles">
+                <div style="display: grid; justify-content: center;" class="articles">
 
-                    <h1>Your Articles</h1>';
+                    <h1>Articles</h1>';
 
                 $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
                 //parcourt du tableau "$articles"
@@ -204,37 +217,34 @@ E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
                         }
                         echo '</div></div></div></div>';
                     }
-                }
-
-                echo '            </div>
-    <div class="pagination">
-        <nav aria-label="...">
-            <ul id="pagin" class="pagination">';
-                $sizeArticles = sizeof($articles);
-                $maxPage = 4;
-                $sizePage = ceil($sizeArticles / $maxPage);
-                for ($i = 0; $i < $sizePage; $i++) {
-                    if ($i == 0) {
-                        echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
-                    } else {
-                        echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                    echo '            </div>
+        <div style="justify-content: flex-end;" class="pagination">
+            <nav aria-label="...">
+                <ul id="pagin" class="pagination">';
+                    $sizeArticles = sizeof($articles);
+                    $maxPage = 4;
+                    $sizePage = ceil($sizeArticles / $maxPage);
+                    for ($i = 0; $i < $sizePage; $i++) {
+                        if ($i == 0) {
+                            echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                        } else {
+                            echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                        }
                     }
+                    echo '
+                </ul>
+            </nav>
+        </div>';
                 }
-                echo '
-            </ul>
-        </nav>
-    </div>';
             }
 
 
             ?>
 
-
         </div>
     </div>
 </body>
 
-</body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <?php
