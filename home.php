@@ -13,18 +13,31 @@ require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
-//NAVBAR
-require_once 'inc/navbar.php';
-//CSS
-require_once 'assets/css/style-navbar.php';
-require_once 'assets/css/style-home.php';
-//BOOTSTRAP
-require_once 'inc/bootstrap.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
-
 // var_dump($_SESSION);
+if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+    $user = user::getUserByToken($connect, $_SESSION["token"]);
+    if (!$user) {
+        echo "user not found";
+        Util::redirect("login.php");
+    } else {
+        //NAVBAR
+        require_once 'inc/navbar.php';
+        //CSS
+        require_once 'assets/css/style-navbar.php';
+        require_once 'assets/css/style-home.php';
+        //BOOTSTRAP
+        require_once 'inc/bootstrap.php';
+    }
+} else {
+    echo "pas connecte";
+    Util::redirect("login.php");
+}
+
+
+
 
 ?>
 
@@ -79,13 +92,12 @@ $connect = $dbconnect->conn;
                         <?php
                         $sizeArticles = sizeof($articles);
                         $maxPage = 4;
-                        $sizePage = ceil($sizeArticles/$maxPage);
+                        $sizePage = ceil($sizeArticles / $maxPage);
                         for ($i = 0; $i < $sizePage; $i++) {
                             if ($i == 0) {
-                                echo '<li class="page-item active"><a class="page-link" href="#">'.($i+1).'</a></li> ';
-
+                                echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
                             } else {
-                                echo '<li class="page-item"><a class="page-link" href="#">'.($i+1).'</a></li> ';
+                                echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
                             }
                         }
 
