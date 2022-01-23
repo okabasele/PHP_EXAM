@@ -8,6 +8,7 @@ body{
   position: absolute ;
   background-color: #FFFCF0;
   width: 60vw;
+  /* padding: 10% 0; */
   text-align:center;
   border: 0.6px solid black;
   border-radius: .25rem;
@@ -57,5 +58,11 @@ body{
   background-color: red;
 }
 
+.contenu{
+  width: 80%;
+  word-wrap: break-word;
+  margin:auto;
+  text-align:center;
+}
 
 </style>

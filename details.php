@@ -54,7 +54,7 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 <body>
    <div class="card">
       <h1><?php echo $titre ?></h1>
-      <p><?php echo $contenu ?></p>
+      <div class="contenu"><?php echo $contenu ?></div>
       <p><?php echo $publicationDate ?></p>
       <p><?php echo User::getUserByID($connect, $idAuteur)["username"]; ?></p>
 
