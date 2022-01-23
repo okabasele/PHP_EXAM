@@ -37,10 +37,6 @@
         margin-bottom: 10px;
     }
 
-    #carouselExampleControls {
-        height: 30%;
-    }
-
     .cats li {
         list-style: none;
         margin-top: 10px;
