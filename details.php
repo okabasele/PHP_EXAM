@@ -58,16 +58,19 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
       <p><?php echo $publicationDate ?></p>
       <p><?php echo User::getUserByID($connect, $idAuteur)["username"]; ?></p>
 
-      <?php
-      if ($idUser == $idAuteur) {
-         echo '<a href="edit.php?edit=' . $get_token . '"><button class="btn">Editer</button></a>';
-      }
-      ?>
-      <form id="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-         <input type="hidden" name="articleToken" value="<?php echo $get_token ?>">
-         <input type="hidden" name="del" value="delete">
-         <button name="delete" class="buttondelete btn" type="submit" value="delete">Delete</button>
-      </form>
+      <div style="display: flex; justify-content:center;">
+
+         <?php
+         if ($idUser == $idAuteur) {
+            echo '<a style="margin-right:10px;" href="edit.php?edit=' . $get_token . '"><button class="btn">Editer</button></a>';
+         }
+         ?>
+         <form id="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <input type="hidden" name="articleToken" value="<?php echo $get_token ?>">
+            <input type="hidden" name="del" value="delete">
+            <button name="delete" class="buttondelete btn" type="submit" value="delete">Delete</button>
+         </form>
+      </div>
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link data-require="sweet-alert@*" data-semver="0.4.2" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
