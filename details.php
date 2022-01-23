@@ -30,7 +30,7 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
    }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
    var_dump($_POST);
-   $article = Controller::fetchData($connect, "*", "articles", "WHERE token=?", [$_POST["articleToken"]]);
+   $article = Article::getArticleByToken($connect,$_POST["articleToken"]);
    if (isset($_POST["del"]) && $_POST["del"]==="delete" ) {
       //si c'est dans une categorie > supprime id article dans categorie
       $catArticle = Article::getCategorieByArticleID($connect, $article["idArticles"]);
@@ -38,7 +38,7 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
          Categorie::deleteArticleIdFromCategorie($connect, $catArticle["id"], $article["idArticles"]);
       }
       //supprimer article
-      article::deleteArticleByToken($connect,$_POST["articleToken"]); //fonctione pas ??
+      article::deleteArticleByToken($connect,$_POST["articleToken"]);
       Util::redirect("home.php");
    }
 }
