@@ -9,7 +9,7 @@ session_start();
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
-
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if (isset($_POST['login'])) {
 	if ($_POST['login'] === "send") {
 		$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
@@ -19,6 +19,9 @@ if (isset($_POST['register'])) {
 	if ($_POST['register'] === "Sign up") {
 		Util::redirect("register.php");
 	}
+}
+} elseif (isset($_GET["u"]) && !empty($_GET["u"])) {
+	session_unset();
 }
 ?>
 

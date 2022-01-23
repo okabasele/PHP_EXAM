@@ -36,6 +36,7 @@ $connect = $dbconnect->conn;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -74,18 +75,15 @@ $connect = $dbconnect->conn;
             </div>
             <div class="pagination">
                 <nav aria-label="...">
-                    <ul class="pagination" id="pagin">
-                        <li class="page-item disabled">
-                            <span class="page-link">Previous</span>
-                        </li>
-                        <?php 
+                    <ul id="pagin" class="pagination">
+                        <?php
                         $sizeArticles = sizeof($articles);
                         $maxPage = 4;
                         $sizePage = ceil($sizeArticles/$maxPage);
                         for ($i = 0; $i < $sizePage; $i++) {
                             if ($i == 0) {
                                 echo '<li class="page-item active"><a class="page-link" href="#">'.($i+1).'</a></li> ';
-                    
+
                             } else {
                                 echo '<li class="page-item"><a class="page-link" href="#">'.($i+1).'</a></li> ';
                             }
@@ -100,13 +98,25 @@ $connect = $dbconnect->conn;
                             </span>
                         </li>
                         <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
                     </ul>
                 </nav>
             </div>
+            <!-- <div class="line-content">1 I have some content</div>
+            <div class="line-content">2 I have some content</div>
+            <div class="line-content">3 I have some content</div>
+            <div class="line-content">4 I have some content</div>
+            <div class="line-content">5 I have some content</div>
+            <div class="line-content">6 I have some content</div>
+            <div class="line-content">7 I have some content</div>
+            <div class="line-content">8 I have some content</div>
+            <div class="line-content">9 I have some content</div>
+            <div class="line-content">10 I have some content</div>
+            <div class="line-content">11 I have some content</div>
+            <div class="line-content">12 I have some content</div>
 
+            <ul id="pagin">
+
+            </ul> -->
         </div>
         <div class="right-side">
 

@@ -50,7 +50,5 @@
         color: black;
         text-decoration: none;
     }
-    .article-block{
-        visibility: hidden;
-    }
+
 </style>

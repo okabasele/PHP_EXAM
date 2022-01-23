@@ -24,7 +24,7 @@
                 <div class="wrap-art-search d-flex">
 
                     <div class="search-bar">
-                        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <!-- <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <div class="input-group-append">
@@ -33,7 +33,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
 
                     </div>
                     <div class="new-art">
