@@ -87,14 +87,30 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 <body>
     <div class="container">
         <div class="menu__group">
-            <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
-            <a href="login.php" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
+            <a href="<?php
+                        if (isset($_SESSION["admin"]) && $_SESSION["admin"] && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+                            echo "panelAdmin.php?u=articles";
+                        } else {
+                            echo "home.php";
+                        }
+                        ?>" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
+            <a href="<?php
+                        if (isset($_SESSION["admin"]) && $_SESSION["admin"] && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+                            echo "loginAdmin.php?u=articles";
+                        } else {
+                            echo "login.php";
+                        }
+                        ?>" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
             </li>
         </div>
-        <div class="card">
+        <div class="card" style="<?php
+                                    if ($user["token"] === $userAccount["token"] or (isset($_SESSION["admin"]) && $_SESSION["admin"])) {
+                                        echo "flex-direction: row;";
+                                    }
+                                    ?>">
             <?php
 
-            if ($user["token"] === $userAccount["token"]) {
+            if ($user["token"] === $userAccount["token"] or (isset($_SESSION["admin"]) && $_SESSION["admin"])) {
                 // var_dump($user);
                 echo '
                         <div class="left">
@@ -103,31 +119,35 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 Name: <input id="upName" type="text" name="name" value="' . $name . '">
 <br><br>
 E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
-<br><br>
-<button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+<br><br>';
+
+if ($user["token"] === $userAccount["token"]) {
+
+    echo '<button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
     Change password
 </button>
-<div class="collapse" id="collapseExample">
-
-    <div>
-        <label for="pass">Current Password:</label>
-        <input id="upPP" type="password" name="prevPassword" minlength="8">
-    </div>
-    <br><br>
-    <div>
-
-        <label for="pass">New Password:</label>
-        <input id="upNP" type="password" name="newPassword" minlength="8">
-    </div>
-    <br><br>
-    <div>
-
-        <label for="pass">Confirmation New Password:</label>
-        <input id="upCP" type="password" name="confPassword" minlength="8">
-    </div>
-
-</div>
-<br><br>
+    <div class="collapse" id="collapseExample">
+    
+        <div>
+            <label for="pass">Current Password:</label>
+            <input id="upPP" type="password" name="prevPassword" minlength="8">
+        </div>
+        <br><br>
+        <div>
+    
+            <label for="pass">New Password:</label>
+            <input id="upNP" type="password" name="newPassword" minlength="8">
+        </div>
+        <br><br>
+        <div>
+    
+            <label for="pass">Confirmation New Password:</label>
+            <input id="upCP" type="password" name="confPassword" minlength="8">
+        </div>
+    
+    </div>';
+}
+echo '<br><br>
 <button name="modifie" type="submit" value="send">Change</button>
 </form>
 
@@ -177,7 +197,7 @@ E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
             </ul>
         </nav>
     </div>';
-                } else {
+                } elseif ($user["token"] === $userAccount["token"]) {
 
                     echo '            <p>You did not create any article</p>
                         <div style="display: flex;">
@@ -190,6 +210,9 @@ E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
                                 to create a new article.
                             </p>
                         </div>';
+                } elseif((isset($_SESSION["admin"]) && $_SESSION["admin"])){
+
+                    echo ' <p>This user did not create any article</p>';
                 }
             } else {
                 echo '            <div style="display:flex;align-items:center;justify-content:center;" class="top">

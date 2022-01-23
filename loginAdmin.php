@@ -5,6 +5,7 @@ require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
 require_once 'assets/css/style-login.php';
+session_start();
 
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	if (isset($_POST['register'])) {
 		if ($_POST['register'] === "Sign up") {
-			Util::redirect("register.php");
+			Util::redirect("registerAdmin.php");
 		}
 	}
 } else {
@@ -31,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Sign In</title>
+	<title>Sign In Admin</title>
 </head>
 <style>
 	input.inputError {
@@ -47,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 	<div class="container">
        <div class="card">
+		   <h3>Login Admin</h3>
 		<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 			<input id="logUid" class="username" name="username" placeholder="USERNAME" type="text" required>
 			<input id="logPwd" name="password" placeholder="PASSWORD" type="password" required>
@@ -66,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php
 //Login
+
 if (isset($loggedIn)) {
 	switch ($loggedIn) {
 		case -1:
@@ -81,12 +84,11 @@ if (isset($loggedIn)) {
 			break;
 		case 1:
 			echo '<script>console.log("Auth ok")</script>';
-			session_start();
 			$_SESSION["logged-in"] = true;
-			$_SESSION["admin"] = false;
+			$_SESSION["admin"] = true;
 			$userToken = Controller::fetchData($connect, "token", "users", "WHERE username=?", [$_POST['username']]);
 			$_SESSION["token"] = $userToken["token"];
-			Util::redirect("home.php");
+			Util::redirect("panelAdmin.php");
 			break;
 	}
 }

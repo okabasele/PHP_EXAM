@@ -1,10 +1,4 @@
 <?php
-/* idee 
-https://bbbootstrap.com/snippets/latest-updates-list-68233138
-https://www.bootdey.com/snippets/view/Support-center
-https://www.bootdey.com/snippets/view/Forum-post-list
-https://codepen.io/melnik909/pen/VQOodQ effet menu
-*/
 session_start();
 //CLASSES
 require_once 'class/database-connection.php';
@@ -46,7 +40,6 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
 <html lang="en">
 
 <head>
-    <link rel="icon" type="image/png" sizes="16x16" href="https://png.pngtree.com/png-clipart/20190516/original/pngtree-vector-newspaper-icon-png-image_4224888.jpg">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,45 +54,105 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
             <div class="posts">
                 <?php
                 $articles = Article::getAllArticles($connect);
-                foreach ($articles as $art) {
-                    $user = User::getUserByID($connect, $art["idUsers"]);
-                    $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                    echo ' <div class="article-block card row-hover pos-relative py-3 px-3 mb-3 border-light border-top-0 border-right-0 border-bottom-0 rounded-0">
-                                <div class="row align-items-center">
-                                    <div class=" mb-3 mb-sm-0">
-                                        <h5>
-                                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
-                                        </h5>
-                                        <p class="text-sm">
-                                        <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
-                                        <a class="text-black" href="account.php?u=' . $user["token"] . '">' . $user["username"] . '</a></p>
-                                        <div class="text-muted">
-                                        <p class="paragraph">' . $art["description"] . '</p>
-                                        </div>
-                                        <div class="text-sm op-5">';
-                    if ($cat) {
-                        echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
-                    }
-                    echo '</div>
-                                </div>
-                            </div>
-                            </div>';
-                }
 
+                if ($articles) {
+                    if (count($articles) == count($articles, COUNT_RECURSIVE)) {
+                        $art = $articles;
+                        $auteur = User::getUserByID($connect, $art["idUsers"]);
+                        $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                        echo ' <div class="article-block card row-hover pos-relative py-3 px-3 mb-3 border-light border-top-0 border-right-0 border-bottom-0 rounded-0">
+                                    <div class="row align-items-center">
+                                    ';
+                        echo '              <div class=" mb-3 mb-sm-0">
+                          <div style="display: flex; justify-content: space-between; flex-direction: row-reverse;">
+                          <div style="display: flex; justify-content: center; ">
+                        <a style="margin-right:10px;" href="edit.php?edit=' . $art["token"] . '"><button class="btn btn-light"><i class="bi bi-arrow-clockwise"></i></button></a>';
+                        echo '<form class="form1" method="post" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">
+                                       <input type="hidden" name="articleToken" value="' . $art["token"] . '">
+                                       <input type="hidden" name="del" value="delete">
+                                       <button name="delete" class="buttondelete btn btn-warning" type="submit" value="delete"><i class="bi bi-trash-fill"></i></button>
+                                    </form>
+                                    </div>
+                                    <h5>
+                                            <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                            </h5>
+                                    </div>';
+
+
+                        echo '
+                                            
+                                            <p class="text-sm">
+                                            <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
+                                            <a class="text-black" href="account.php?u=' . $auteur["token"] . '">' . $auteur["username"] . '</a></p>
+                                            <div class="text-muted">
+                                            <p class="paragraph">' . $art["description"] . '</p>
+                                            </div>
+                                            <div class="text-sm op-5">';
+                        if ($cat) {
+                            echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                        }
+                        echo '</div>
+                                    </div>
+                                </div>
+                                </div>';
+                    } else {
+                        foreach ($articles as $art) {
+                            $auteur = User::getUserByID($connect, $art["idUsers"]);
+                            $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                            echo ' <div class="article-block card row-hover pos-relative py-3 px-3 mb-3 border-light border-top-0 border-right-0 border-bottom-0 rounded-0">
+                                        <div class="row align-items-center">
+                                        ';
+                            echo '              <div class=" mb-3 mb-sm-0">
+                              <div style="display: flex; justify-content: space-between; flex-direction: row-reverse;">
+                              <div style="display: flex; justify-content: center; ">
+                            <a style="margin-right:10px;" href="edit.php?edit=' . $art["token"] . '"><button class="btn btn-light"><i class="bi bi-arrow-clockwise"></i></button></a>';
+                            echo '<form class="form1" method="post" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">
+                                           <input type="hidden" name="articleToken" value="' . $art["token"] . '">
+                                           <input type="hidden" name="del" value="delete">
+                                           <button name="delete" class="buttondelete btn btn-warning" type="submit" value="delete"><i class="bi bi-trash-fill"></i></button>
+                                        </form>
+                                        </div>
+                                        <h5>
+                                                <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                                </h5>
+                                        </div>';
+
+
+                            echo '
+                                                
+                                                <p class="text-sm">
+                                                <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
+                                                <a class="text-black" href="account.php?u=' . $auteur["token"] . '">' . $auteur["username"] . '</a></p>
+                                                <div class="text-muted">
+                                                <p class="paragraph">' . $art["description"] . '</p>
+                                                </div>
+                                                <div class="text-sm op-5">';
+                            if ($cat) {
+                                echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                            }
+                            echo '</div>
+                                        </div>
+                                    </div>
+                                    </div>';
+                        }
+                    }
+                }
                 ?>
             </div>
             <div class="pagination">
                 <nav aria-label="...">
                     <ul id="pagin" class="pagination">
                         <?php
-                        $sizeArticles = sizeof($articles);
-                        $maxPage = 4;
-                        $sizePage = ceil($sizeArticles / $maxPage);
-                        for ($i = 0; $i < $sizePage; $i++) {
-                            if ($i == 0) {
-                                echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
-                            } else {
-                                echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                        if ($articles) {
+                            $sizeArticles = sizeof($articles);
+                            $maxPage = 4;
+                            $sizePage = ceil($sizeArticles / $maxPage);
+                            for ($i = 0; $i < $sizePage; $i++) {
+                                if ($i == 0) {
+                                    echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                                } else {
+                                    echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                                }
                             }
                         }
 

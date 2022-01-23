@@ -165,4 +165,17 @@ class User extends Controller
     {
         return self::fetchData($connect, "*", "users", "WHERE idUsers=?", [$userID]);
     }
+
+    static function getAllUsers(mysqli $connect) : array|bool
+    {
+        return self::fetchData($connect, "*", "users", "WHERE status='user'");
+    }
+
+    static function deleteUserByToken(mysqli $connect, string $token): void 
+    {
+        $user = User::getUserByToken($connect,$token);
+        $userID = $user["idUsers"];
+        self::sendQuery($connect, "DELETE FROM articles WHERE idUsers='$userID'");
+        self::sendQuery($connect, "DELETE FROM users WHERE token='$token'");
+    }
 }
