@@ -12,17 +12,29 @@
 <body>
 
   <?php
+  //CLASSES
   require_once 'class/database-connection.php';
   require_once 'class/controller.php';
   require_once 'class/categorie.php';
   require_once 'class/article.php';
   require_once 'class/util.php';
-  require_once 'assets/css/style-new.php';
-
+  session_start();
   //Récuperer la connection à la bdd
   $dbconnect = Util::getDatabaseConnection();
   $connect = $dbconnect->conn;
-  session_start();
+  
+  if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+      $user = UsergetUserByToken($connect, $_SESSION["token"]);
+      if (!$user) {
+          Util::redirect("login.php");
+      } else {
+          //STYLE
+          require_once 'assets/css/style-new.php';
+      }
+  } else {
+      Util::redirect("login.php");
+  }
+  
   // define variables and set to empty values
   $titleErr = "";
   $title =  "";

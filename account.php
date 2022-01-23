@@ -1,38 +1,40 @@
 <?php
+//CLASSES
 require_once 'class/database-connection.php';
 require_once 'class/util.php';
 require_once 'class/controller.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
 require_once 'class/user.php';
-require_once 'assets/css/style.php';
-require_once 'inc/bootstrap.php';
-require_once 'assets/css/style-account.php';
+
+session_start();
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
-session_start();
+
+if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+    $user = UsergetUserByToken($connect, $_SESSION["token"]);
+    if (!$user) {
+        Util::redirect("login.php");
+    } else {
+        //STYLE
+        require_once 'inc/bootstrap.php';
+        require_once 'assets/css/style.php';
+        require_once 'assets/css/style-account.php';
+    }
+} else {
+    Util::redirect("login.php");
+}
+
 $articles = "";
 $name = "";
 if (isset($_GET['u']) && !empty($_GET['u'])) {
     $get_token = htmlspecialchars($_GET['u']);
-    $userData = User::getUserByToken($connect, $get_token);
+    $userData = UsergetUserByToken($connect, $get_token);
     $name = $userData["username"];
     $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
     //   var_dump($articles);
 }
-
-// for ($i=0; $i < ; $i++) { 
-//     # code...
-// }
-
-//   if($idUser == $idAuteur){
-//       echo $name;
-//       echo $userData;
-//       echo $articles;
-//   }
-
-
 
 //quand on essaye d'aller sur la page
 $modeEdition = 0;
@@ -53,7 +55,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
-            $account = User::updateData($connect, $_POST['username'], $_POST['password']);
+            $account = UserupdateData($connect, $_POST['username'], $_POST['password']);
         }
     }
 }
@@ -82,49 +84,49 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 <body>
     <div class="container">
         <div class="menu__group">
-        <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
-        <a href="login.php" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
-         </li>
-      <div class="card">
+            <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
+            <a href="login.php" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
+            </li>
+            <div class="card">
 
-        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-            Name: <input type="text" name="name" value="<?php echo $name; ?>">
-            <br><br>
-            E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
-            <br><br>
-            <div>
+                    Name: <input type="text" name="name" value="<?php echo $name; ?>">
+                    <br><br>
+                    E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
+                    <br><br>
+                    <div>
 
-                <label for="pass">Current Password:</label>
-                <input type="password" id="pass" name="password" minlength="8" required>
-            </div>
-            <br><br>
-            <div>
+                        <label for="pass">Current Password:</label>
+                        <input type="password" id="pass" name="password" minlength="8" required>
+                    </div>
+                    <br><br>
+                    <div>
 
-                <label for="pass">New Password:</label>
-                <input type="password" id="pass" name="password" minlength="8" required>
-            </div>
-            <br><br>
-            <div>
+                        <label for="pass">New Password:</label>
+                        <input type="password" id="pass" name="password" minlength="8" required>
+                    </div>
+                    <br><br>
+                    <div>
 
-                <label for="pass">New Password confirmation:</label>
-                <input type="password" id="pass" name="password" minlength="8" required>
-            </div>
-            <br><br>
-            <button name="modifie" type="submit" value="send">MODIFIER</button>
-        </form>
+                        <label for="pass">New Password confirmation:</label>
+                        <input type="password" id="pass" name="password" minlength="8" required>
+                    </div>
+                    <br><br>
+                    <button name="modifie" type="submit" value="send">MODIFIER</button>
+                </form>
 
-        <div class="articles">
+                <div class="articles">
 
-            <h1>Your Articles</h1>
-            <?php
-            $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+                    <h1>Your Articles</h1>
+                    <?php
+                    $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
 
-            //parcourt du tableau "$articles"
-            if($articles){
-            foreach ($articles as $art) {
-                $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                echo ' <div class="row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                    //parcourt du tableau "$articles"
+                    if ($articles) {
+                        foreach ($articles as $art) {
+                            $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                            echo ' <div class="row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
                                 <div class="row align-items-center">
                                     <div class=" mb-3 mb-sm-0">
                                         <h5>
@@ -132,19 +134,19 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
                                         </h5>
 
                                         <div class="text-sm op-5">';
-                if ($cat) {
-                    echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
-                }
-                echo '</div>
+                            if ($cat) {
+                                echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                            }
+                            echo '</div>
                                 </div>
                             </div>
                             </div>';
-            }
-        }
+                        }
+                    }
 
-            ?>
+                    ?>
 
-        </div>
+                </div>
 </body>
 
 </body>

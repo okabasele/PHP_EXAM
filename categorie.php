@@ -7,19 +7,30 @@ require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
-//NAVBAR
-require_once 'inc/navbar.php';
-//CSS
-require_once 'assets/css/style-navbar.php';
-require_once 'assets/css/style-home.php';
-//BOOTSTRAP
-require_once 'inc/bootstrap.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
-
-if(isset($_GET['cat']) AND $_GET['cat'] > 0 ){
-    $cat = Categorie::getCategorieByID($connect,$_GET['cat']);
+// var_dump($_SESSION);
+if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
+    $user = User::getUserByToken($connect, $_SESSION["token"]);
+    if (!$user) {
+        echo "user not found";
+        Util::redirect("login.php");
+    } else {
+        //NAVBAR
+        require_once 'inc/navbar.php';
+        //CSS
+        require_once 'assets/css/style-navbar.php';
+        require_once 'assets/css/style-home.php';
+        //BOOTSTRAP
+        require_once 'inc/bootstrap.php';
+        if(isset($_GET['cat']) AND $_GET['cat'] > 0 ){
+            $cat = Categorie::getCategorieByID($connect,$_GET['cat']);
+        }
+    }
+} else {
+    echo "pas connecte";
+    Util::redirect("login.php");
 }
 
 ?>

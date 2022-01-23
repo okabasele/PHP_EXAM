@@ -12,7 +12,7 @@ $connect = $dbconnect->conn;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (isset($_POST['login'])) {
 		if ($_POST['login'] === "send") {
-			$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
+			$loggedIn = UserisUserInDatabase($connect, $_POST['username'], $_POST['password']);
 		}
 	}
 	if (isset($_POST['register'])) {

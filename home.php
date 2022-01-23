@@ -18,7 +18,7 @@ $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 // var_dump($_SESSION);
 if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
-    $user = user::getUserByToken($connect, $_SESSION["token"]);
+    $user = User::getUserByToken($connect, $_SESSION["token"]);
     if (!$user) {
         echo "user not found";
         Util::redirect("login.php");
