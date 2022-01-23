@@ -90,38 +90,15 @@ $connect = $dbconnect->conn;
                         }
 
                         ?>
-                        <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active">
-                            <span class="page-link">
-                                2
-                                <span class="sr-only">(current)</span>
-                            </span>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
                     </ul>
                 </nav>
             </div>
-            <!-- <div class="line-content">1 I have some content</div>
-            <div class="line-content">2 I have some content</div>
-            <div class="line-content">3 I have some content</div>
-            <div class="line-content">4 I have some content</div>
-            <div class="line-content">5 I have some content</div>
-            <div class="line-content">6 I have some content</div>
-            <div class="line-content">7 I have some content</div>
-            <div class="line-content">8 I have some content</div>
-            <div class="line-content">9 I have some content</div>
-            <div class="line-content">10 I have some content</div>
-            <div class="line-content">11 I have some content</div>
-            <div class="line-content">12 I have some content</div>
 
-            <ul id="pagin">
-
-            </ul> -->
         </div>
         <div class="right-side">
 
             <div class="side-block">
-                <h3>Annoncements</h3>
+                <h3>Announcements</h3>
                 <div class="divline"></div>
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
