@@ -37,10 +37,6 @@
         margin-bottom: 10px;
     }
 
-    #carouselExampleControls {
-        height: 30%;
-    }
-
     .cats li {
         list-style: none;
         margin-top: 10px;
@@ -50,7 +46,5 @@
         color: black;
         text-decoration: none;
     }
-    .article-block{
-        visibility: hidden;
-    }
+
 </style>
