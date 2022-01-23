@@ -56,8 +56,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
             $update = User::updateAccount($connect, $_POST['name'], $_POST['email'], $_POST['prevPassword'], $_POST['newPassword'], $_POST['confPassword'], $_POST['tokenUser']);
-            echo $update;
-            var_dump($_POST);
+            Util::redirect("account.php?u=" . $_POST['tokenUser']);
         }
     }
 }
@@ -91,91 +90,148 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
             <a href="login.php" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
             </li>
-            <div class="card">
-                <div class="left">
-                    <form method="POST">
-                        <input type="hidden" name="tokenUser" value="<?php echo $userToken ?>">
-                        Name: <input id="upName" type="text" name="name" value="<?php echo $name; ?>">
-                        <br><br>
-                        E-mail: <input type="text" id="upEmail" name="email" value="<?php echo $email; ?>">
-                        <br><br>
-                        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            Change password
-                        </button>
-                        <div class="collapse" id="collapseExample">
+        </div>
+        <div class="card">
+            <?php
 
-                            <div>
-                                <label for="pass">Current Password:</label>
-                                <input id="upPP" type="password" name="prevPassword" minlength="8">
-                            </div>
-                            <br><br>
-                            <div>
+            if ($user["token"] === $userAccount["token"]) {
+                var_dump($user);
+                echo '
+                        <div class="left">
+                        <form method="POST" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '";">
+<input type="hidden" name="tokenUser" value="' . $userToken . '">
+Name: <input id="upName" type="text" name="name" value="' . $name . '">
+<br><br>
+E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
+<br><br>
+<button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Change password
+</button>
+<div class="collapse" id="collapseExample">
 
-                                <label for="pass">New Password:</label>
-                                <input id="upNP" type="password" name="newPassword" minlength="8">
-                            </div>
-                            <br><br>
-                            <div>
+    <div>
+        <label for="pass">Current Password:</label>
+        <input id="upPP" type="password" name="prevPassword" minlength="8">
+    </div>
+    <br><br>
+    <div>
 
-                                <label for="pass">Confirmation New Password:</label>
-                                <input id="upCP" type="password" name="confPassword" minlength="8">
-                            </div>
+        <label for="pass">New Password:</label>
+        <input id="upNP" type="password" name="newPassword" minlength="8">
+    </div>
+    <br><br>
+    <div>
 
-                        </div>
-                        <br><br>
-                        <button name="modifie" type="submit" value="send">Change</button>
-                    </form>
+        <label for="pass">Confirmation New Password:</label>
+        <input id="upCP" type="password" name="confPassword" minlength="8">
+    </div>
 
-                </div>
-                <div class="right">
+</div>
+<br><br>
+<button name="modifie" type="submit" value="send">Change</button>
+</form>
 
-                    <div class="articles">
+</div>
 
-                        <h1>Your Articles</h1>
 
-                        <?php
-                        $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
-                        //parcourt du tableau "$articles"
-                        if ($articles) {
-                            foreach ($articles as $art) {
-                                $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                                echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-                                        <div class="row align-items-center">
-                                            <div class=" mb-3 mb-sm-0">
-                                                <h5>
-                                                <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
-                                                </h5>
-                                                <div class="text-sm op-5">';
-                                if ($cat) {
-                                    echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
-                                }
-                                echo '</div></div></div></div>';
-                            }
+<div class="right">
+
+    <div class="articles">
+    <h1>Your Articles</h1>
+
+
+';
+                $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+                //parcourt du tableau "$articles"
+                if ($articles) {
+                    foreach ($articles as $art) {
+                        $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                        echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                        <div class="row align-items-center">
+                            <div class=" mb-3 mb-sm-0">
+                                <h5>
+                                <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                </h5>
+                                <div class="text-sm op-5">';
+                        if ($cat) {
+                            echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
                         }
+                        echo '</div></div></div></div>';
+                    }
 
-                        ?>
+                    echo '            </div>
+    <div class="pagination">
+        <nav aria-label="...">
+            <ul id="pagin" class="pagination">';
+                    $sizeArticles = sizeof($articles);
+                    $maxPage = 4;
+                    $sizePage = ceil($sizeArticles / $maxPage);
+                    for ($i = 0; $i < $sizePage; $i++) {
+                        if ($i == 0) {
+                            echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                        } else {
+                            echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                        }
+                    }
+                    echo '
+            </ul>
+        </nav>
+    </div>';
+                }
+            } else {
+                echo '            <div style="display:flex;align-items:center;justify-content:center;" class="top">
+                <p>Name : ' . $name . '</p>
+            </div>
+            <div class="bottom">
+                <div class="articles">
 
-                    </div>
-                    <div class="pagination">
-                        <nav aria-label="...">
-                            <ul id="pagin" class="pagination">
-                                <?php
-                                $sizeArticles = sizeof($articles);
-                                $maxPage = 4;
-                                $sizePage = ceil($sizeArticles / $maxPage);
-                                for ($i = 0; $i < $sizePage; $i++) {
-                                    if ($i == 0) {
-                                        echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
-                                    } else {
-                                        echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
-                                    }
-                                }
+                    <h1>Your Articles</h1>';
 
-                                ?>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
+                $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+                //parcourt du tableau "$articles"
+                if ($articles) {
+                    foreach ($articles as $art) {
+                        $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                        echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                <div class="row align-items-center">
+                    <div class=" mb-3 mb-sm-0">
+                        <h5>
+                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                        </h5>
+                        <div class="text-sm op-5">';
+                        if ($cat) {
+                            echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                        }
+                        echo '</div></div></div></div>';
+                    }
+                }
+
+                echo '            </div>
+    <div class="pagination">
+        <nav aria-label="...">
+            <ul id="pagin" class="pagination">';
+                $sizeArticles = sizeof($articles);
+                $maxPage = 4;
+                $sizePage = ceil($sizeArticles / $maxPage);
+                for ($i = 0; $i < $sizePage; $i++) {
+                    if ($i == 0) {
+                        echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                    } else {
+                        echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                    }
+                }
+                echo '
+            </ul>
+        </nav>
+    </div>';
+            }
+
+
+            ?>
+
+
+        </div>
+    </div>
 </body>
 
 </body>
@@ -183,39 +239,6 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
 <?php
 require_once "assets/js/js-pagination.php";
-
-if (isset($update)) {
-    switch ($update) {
-        case -1:
-            echo '<script>swal("Authentification failed", "The email is not valid.", "error");
-            logUid.classList.add("inputError");
-            </script>';
-            break;
-        case -2:
-            echo '<script>
-            swal("Authentification failed", "Your current password is incorrect.", "error");
-            logPwd.classList.add("inputError");
-            </script>';
-            break;
-        case -3:
-            echo '<script>
-                swal("Authentification failed", "Your new password is incorrect.", "error");
-                logPwd.classList.add("inputError");
-                </script>';
-            break;
-        case ($update > 0):
-            echo '<script>
-                    swal("Update", "Your data have been succesfully updated.", "success").then(function () {
-                        window.location.href = "http://localhost/php_exam/login.php";
-                      });
-                    </script>';
-            // Util::redirect("account.php?u=".$_POST['tokenUser']);
-            break;
-        case 0:
-            Util::redirect("account.php?u=" . $_POST['tokenUser']);
-            break;
-    }
-}
 ?>
 
 </html>
