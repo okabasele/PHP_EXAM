@@ -59,7 +59,7 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 <html>
 
 <head>
-   <title>Accueil</title>
+   <title>Articles</title>
    <meta charset="utf-8">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>

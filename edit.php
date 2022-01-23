@@ -90,7 +90,7 @@ if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
 <html>
 
 <head>
-    <title>Accueil</title>
+    <title>Edition</title>
     <meta charset="utf-8">
 </head>
 
