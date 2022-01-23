@@ -4,6 +4,8 @@ require_once 'class/util.php';
 require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
+require_once 'assets/css/style-register.php';
+
 
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
@@ -39,6 +41,7 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
+	<div class="card">
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 		<input id="regUid" name="username" placeholder="USERNAME" type="text" required>
 		<input id="regEmail" name="email" placeholder="EMAIL" type="text" required>

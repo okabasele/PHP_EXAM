@@ -6,6 +6,7 @@ body{
 }
 .card {
   position: absolute ;
+  top:10%;
   background-color: #FFFCF0;
   width: 60vw;
   /* padding: 10% 0; */
@@ -65,7 +66,7 @@ body{
   text-align:center;
 }
 .button{
-  background-color: DodgerBlue;
+  background-color: #42AAC3;
   border: none;
   color: white;
   padding: 12px 16px;
@@ -76,7 +77,7 @@ body{
 }
 
 .button:hover {
-  background-color: RoyalBlue;
+  background-color: #209BBA;
 }
 
 </style>
