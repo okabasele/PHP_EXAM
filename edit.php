@@ -75,8 +75,10 @@ if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
 </head>
 
 <body>
+    
     <h2>Edition</h2>
-    <p><span class="error">* required field</span></p>
+    <div class = card>
+    <!-- <p><span class="error">* required field</span></p> -->
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         Title: <input type="text" name="title" value="<?php echo $title ?>" required>
         <span class="error">* <?php echo $titleErr; ?></span>

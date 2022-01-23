@@ -67,8 +67,10 @@
     }
   }
   ?>
+  
   <h2>Add new artical</h2>
-  <p><span class="error">* required field</span></p>
+  <div class="card">
+  <!-- <p><span class="error">* required field</span></p> -->
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
     Title: <input type="text" name="title" required>
     <span class="error">* <?php echo $titleErr; ?></span>

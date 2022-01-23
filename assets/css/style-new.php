@@ -10,13 +10,15 @@ body{
     flex-direction: column;
     width: 70vw;
     top: 10%;
-    left: 15%;
+    left: 10%;
     right: 20%;
     word-wrap: break-word;
     background-color: #FFFCF0;
     background-clip: border-box;
-    border: 0 solid transparent;
+    border: 0.6px solid black;
     display: flex;
+    font-size:100%;
+    text-align:center;
   justify-content: center;
   flex-direction: row;
   padding: 50px 10px;
@@ -37,13 +39,13 @@ button{
   outline: none;
   color: black;
   background-color: white;
-  border: 1px solid #4CAF50;
+  border: 1px solid black;
   border-radius: 8px;
 
 }
 
 button:hover {
- background-color: #4CAF50; /* Green */
+ background-color: black;
   color: white;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
@@ -55,6 +57,12 @@ button:active {
 }
 .me-2 {
     margin-right: .5rem!important;
+}
+
+h2{
+  text-align:center;
+  font-family:sans serif;
+  font-size:200%;
 }
 
 </style>
