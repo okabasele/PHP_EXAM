@@ -27,7 +27,7 @@ body{
 }
 button{
     display: inline-block;
-  padding: 10px 24px;
+  padding: 15px 0px;
   font-size: 10px;
   font-family: Merriweather;
   width:100px;
