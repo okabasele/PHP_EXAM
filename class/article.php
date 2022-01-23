@@ -28,4 +28,12 @@ class Article extends Controller
     {
         return self::fetchData($connect, "*", "articles", "WHERE token=?", [$token]);
     }
+
+
+    static function deleteArticleByToken($connect,$token) : array|false
+    {
+        return self::deleteData($connect, "*", "articles", "WHERE token=?", [$token]);
+    }
+
+
 }

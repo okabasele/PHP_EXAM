@@ -4,6 +4,7 @@ require_once 'class/controller.php';
 require_once 'class/util.php';
 require_once 'class/user.php';
 require_once 'assets/css/style-details.php';
+require_once 'class/article.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
@@ -28,8 +29,17 @@ if($article) {
     die('Cet article n\'existe pas !');
  }
 
-} else {
- die('Erreur');
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+   if (isset($_POST["delete"]) && !empty($_POST["delete"]) ) {
+      //supprime id article dans categorie
+      $catArticle = Article::getCategorieByArticleID($connect, $article["idArticles"]);
+      Categorie::deleteArticleIdFromCategorie($connect, $catArticle["id"], $article["idArticles"]);
+      //supprimer article
+      article::deleteArticleByToken($connect,$_POST["articleToken"]);
+      //   Util::redirect("home.php");
+    }
+
 }
 ?>
 <!DOCTYPE html>
@@ -47,10 +57,12 @@ if($article) {
 
  <?php
  if ($idUser == $idAuteur) {
-    echo '<button><a href="edit.php?edit='.$get_token.'">Editer</a></button>';
-
+    echo '<a href="edit.php?edit='.$get_token.'"><button>Editer</button></a>';
  }
  ?>
- <button class="buttondelete"  type="reset" value="delete">Delete</button>
+ <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+ <input type="hidden" name="articleToken" value="<?php echo $editToken?>">
+    <button name="delete" class="buttondelete"  type="submit" value="delete">Delete</button>
+ </form>
 </body>
 </html>

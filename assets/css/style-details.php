@@ -5,24 +5,12 @@ body{
     margin-top:20px;
 }
 .card {
-    position: absolute ;
-    display: flex;
-    flex-direction: column;
-    width: 70vw;
-    top: 10%;
-    left: 10%;
-    right: 20%;
-    word-wrap: break-word;
-    background-color: #FFFCF0;
-    background-clip: border-box;
-    border: 0.6px solid black;
-    display: flex;
-    font-size:100%;
-    text-align:center;
-  justify-content: center;
-  flex-direction: row;
-  padding: 50px 10px;
- border-radius: .25rem;
+  position: absolute ;
+  background-color: #FFFCF0;
+  width: 60vw;
+  text-align:center;
+  border: 0.6px solid black;
+  border-radius: .25rem;
  margin-bottom: 1.5rem;
  box-shadow: 0 2px 6px 0 rgb(000 000 000 / 65%), 0 2px 6px 0 rgb(000 000 000 / 54%);
 }
@@ -33,6 +21,7 @@ button{
   font-size: 10px;
   font-family: Merriweather;
   width:100px;
+  height:30px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
