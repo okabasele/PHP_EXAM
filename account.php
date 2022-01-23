@@ -81,7 +81,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
 <body>
     <div class="container">
-        <li class="menu__group">
+        <div class="menu__group">
         <a href="home.php" class="menu__link r-link text-underlined"><button class="button">Home</button></a>
         <a href="login.php" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
          </li>

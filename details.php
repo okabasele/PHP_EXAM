@@ -53,9 +53,12 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 </head>
 
 <body>
-<li class="menu__group">
-   <a href="home.php" class="fa fa-home"><button class="button">Home</button></a>
- </li>
+<div class="menu__group">
+   <a href="home.php">
+      <button class="button"><i class="fa fa-home"></i> Home</button>
+
+   </a>
+ </div>
    <div class="card">
       <h1><?php echo $titre ?></h1>
       <div class="contenu"><?php echo $contenu ?></div>
