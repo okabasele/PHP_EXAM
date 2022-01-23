@@ -98,6 +98,7 @@ if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
             <br><br>
         </div>
         <button name="edit" type="submit" value="send">Update</button>
+        
     </form>
 </body>
 

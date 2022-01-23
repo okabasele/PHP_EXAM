@@ -39,6 +39,7 @@ if($article) {
  <meta charset="utf-8">
 </head>
 <body>
+   <div class="card">
  <h1><?php echo $titre ?></h1>
  <p><?php echo $contenu ?></p>
  <p><?php echo $publicationDate ?></p>
@@ -50,5 +51,6 @@ if($article) {
 
  }
  ?>
+ <button class="buttondelete"  type="reset" value="delete">Delete</button>
 </body>
 </html>

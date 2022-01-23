@@ -24,7 +24,7 @@ body{
   padding: 50px 10px;
  border-radius: .25rem;
  margin-bottom: 1.5rem;
-box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+ box-shadow: 0 2px 6px 0 rgb(000 000 000 / 65%), 0 2px 6px 0 rgb(000 000 000 / 54%);
 }
 
 button{
@@ -51,7 +51,7 @@ button:hover {
 }
 
 button:active {
-  background-color: #3e8e41;
+  background-color: #000000;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
