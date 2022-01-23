@@ -1,8 +1,8 @@
 <nav class="nav">
         <div class="nav-wrap d-flex w-100 h-100">
-
             <div class="left-nav d-flex w-30">
                 <div class="icon">
+                    <img src="assets\css\ARTICLE.png" style="width:45px;height:45px;" >
                 </div>
                 <div class="pages">
                     <div class="page__menu menu">

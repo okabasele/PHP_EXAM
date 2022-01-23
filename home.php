@@ -46,6 +46,7 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://png.pngtree.com/png-clipart/20190516/original/pngtree-vector-newspaper-icon-png-image_4224888.jpg">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
