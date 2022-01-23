@@ -13,7 +13,7 @@ $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 
 if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["logged-in"]) && $_SESSION["logged-in"]) {
-    $user = UsergetUserByToken($connect, $_SESSION["token"]);
+    $user = User::getUserByToken($connect, $_SESSION["token"]);
     if (!$user) {
         Util::redirect("login.php");
     } else {
@@ -30,7 +30,7 @@ $articles = "";
 $name = "";
 if (isset($_GET['u']) && !empty($_GET['u'])) {
     $get_token = htmlspecialchars($_GET['u']);
-    $userData = UsergetUserByToken($connect, $get_token);
+    $userData = User::getUserByToken($connect, $get_token);
     $name = $userData["username"];
     $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
     //   var_dump($articles);
@@ -55,7 +55,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
-            $account = UserupdateData($connect, $_POST['username'], $_POST['password']);
+            $account = User::updateAccount($connect, $_POST['username'], $_POST['email'], $_POST['prevPassword'], $_POST['newPassword'], $_POST['confPassword']);
         }
     }
 }
@@ -69,6 +69,8 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <style>
     input.inputError {
@@ -88,68 +90,90 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             <a href="login.php" class="menu__link r-link text-underlined"><button class="button">Déconnexion</button></a>
             </li>
             <div class="card">
+                <div class="left">
+                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-                <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        Name: <input type="text" name="name" value="<?php echo $name; ?>">
+                        <br><br>
+                        E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
+                        <br><br>
+                        <div>
 
-                    Name: <input type="text" name="name" value="<?php echo $name; ?>">
-                    <br><br>
-                    E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
-                    <br><br>
-                    <div>
+                            <label for="pass">Current Password:</label>
+                            <input type="password" id="pass" name="prevPassword" minlength="8">
+                        </div>
+                        <br><br>
+                        <div>
 
-                        <label for="pass">Current Password:</label>
-                        <input type="password" id="pass" name="password" minlength="8" required>
-                    </div>
-                    <br><br>
-                    <div>
+                            <label for="pass">New Password:</label>
+                            <input type="password" id="pass" name="newPassword" minlength="8">
+                        </div>
+                        <br><br>
+                        <div>
 
-                        <label for="pass">New Password:</label>
-                        <input type="password" id="pass" name="password" minlength="8" required>
-                    </div>
-                    <br><br>
-                    <div>
+                            <label for="pass">Confirmation New Password:</label>
+                            <input type="password" id="pass" name="confPassword" minlength="8">
+                        </div>
+                        <br><br>
+                        <button name="modifie" type="submit" value="send">Change</button>
+                    </form>
 
-                        <label for="pass">New Password confirmation:</label>
-                        <input type="password" id="pass" name="password" minlength="8" required>
-                    </div>
-                    <br><br>
-                    <button name="modifie" type="submit" value="send">MODIFIER</button>
-                </form>
+                </div>
+                <div class="right">
 
-                <div class="articles">
+                    <div class="articles">
 
-                    <h1>Your Articles</h1>
-                    <?php
-                    $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+                        <h1>Your Articles</h1>
 
-                    //parcourt du tableau "$articles"
-                    if ($articles) {
-                        foreach ($articles as $art) {
-                            $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                            echo ' <div class="row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-                                <div class="row align-items-center">
-                                    <div class=" mb-3 mb-sm-0">
-                                        <h5>
-                                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
-                                        </h5>
-
-                                        <div class="text-sm op-5">';
-                            if ($cat) {
-                                echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                        <?php
+                        $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
+                        //parcourt du tableau "$articles"
+                        if ($articles) {
+                            foreach ($articles as $art) {
+                                $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                                echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                                        <div class="row align-items-center">
+                                            <div class=" mb-3 mb-sm-0">
+                                                <h5>
+                                                <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                                </h5>
+                                                <div class="text-sm op-5">';
+                                if ($cat) {
+                                    echo '<a class="text-black mr-2" href=categorie.php?cat="' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+                                }
+                                echo '</div></div></div></div>';
                             }
-                            echo '</div>
-                                </div>
-                            </div>
-                            </div>';
                         }
-                    }
 
-                    ?>
+                        ?>
 
+                    </div>
+                    <div class="pagination">
+                        <nav aria-label="...">
+                            <ul id="pagin" class="pagination">
+                                <?php
+                                $sizeArticles = sizeof($articles);
+                                $maxPage = 4;
+                                $sizePage = ceil($sizeArticles / $maxPage);
+                                for ($i = 0; $i < $sizePage; $i++) {
+                                    if ($i == 0) {
+                                        echo '<li class="page-item active"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                                    } else {
+                                        echo '<li class="page-item"><a class="page-link" href="#">' . ($i + 1) . '</a></li> ';
+                                    }
+                                }
+
+                                ?>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
 </body>
 
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<?php
+require_once "assets/js/js-pagination.php";
+?>
 
 </html>
