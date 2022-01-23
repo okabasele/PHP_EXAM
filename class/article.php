@@ -32,7 +32,7 @@ class Article extends Controller
 
     static function deleteArticleByToken(mysqli $connect, string $token) : void
     {
-        self::sendQuery($connect,"DELETE FROM articles WHERE token='.$token.'");
+        self::sendQuery($connect,"DELETE FROM articles WHERE token='$token'");
     }
 
 
