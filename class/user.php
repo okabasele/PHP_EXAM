@@ -4,7 +4,7 @@ class User extends Controller
 {
 
     //Ajouter un utlisateur dans la base de données (REGISTER)
-    public static function addUserInDatabase(mysqli $connect, string $username, string $password, string $password2, string $email, string $token): int
+    public static function addUserInDatabase(mysqli $connect, string $username, string $password, string $password2, string $email, string $token,string $status): int
     {
         //Verifier si l'utilisateur n'est pas déja dans la BDD
         if (self::checkUsername($connect, $username, $password)) //Username deja utilisé
@@ -28,7 +28,7 @@ class User extends Controller
         //Crypté le mot de passe avant de le stocker
         $password = password_hash($password, PASSWORD_BCRYPT);
         //Ajouter l'utilisateur dans la BDD
-        self::insertData($connect, "users", "username=?,password=?,email=?,token=?", [$username, $password, $email, $token]);
+        self::insertData($connect, "users", "username=?,password=?,email=?,token=?,status=?", [$username, $password, $email, $token,$status]);
         return 1;
     }
 

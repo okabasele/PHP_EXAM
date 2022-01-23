@@ -23,7 +23,9 @@ class Util
 
     static function redirect(string $url) : void
     {
+        ob_start();
         header('Location: ' . $url);
+        ob_end_flush();
         die();
     }
 
