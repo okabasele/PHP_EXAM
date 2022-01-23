@@ -24,7 +24,7 @@ class Categorie extends Controller
     {
         $categorie = self::getCategorieByID($connect,$idCat);
         if ($categorie) {
-            $articlesID = explode(",",$categorie["article"]);
+            $articlesID = explode(",",$categorie["idArticles"]);
             foreach ($articlesID as $id) {
                 if ($id==$artID) {
                     unset($id);

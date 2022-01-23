@@ -3,8 +3,6 @@ require_once 'class/database-connection.php';
 require_once 'class/controller.php';
 require_once 'class/util.php';
 require_once 'class/user.php';
-require_once 'class/categorie.php';
-
 require_once 'assets/css/style-details.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
@@ -36,12 +34,12 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
    if (isset($_POST["del"]) && $_POST["del"]==="delete" ) {
       //si c'est dans une categorie > supprime id article dans categorie
       $catArticle = Article::getCategorieByArticleID($connect, $article["idArticles"]);
-      if ($catArticles) {
+      if ($catArticle) {
          Categorie::deleteArticleIdFromCategorie($connect, $catArticle["id"], $article["idArticles"]);
       }
       //supprimer article
       article::deleteArticleByToken($connect,$_POST["articleToken"]); //fonctione pas ??
-      // Util::redirect("home.php");
+      Util::redirect("home.php");
    }
 }
 ?>
@@ -55,33 +53,6 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
 
 <body>
    <div class="card">
-<<<<<<< HEAD
- <h1><?php echo $titre ?></h1>
- <p><?php echo $contenu ?></p>
- <p><?php echo $publicationDate ?></p>
- <p><?php echo User::getUserByID($connect,$idAuteur)["username"]; ?></p>
- <p><?php 
- $cat = Article::getCategorieByArticleID($connect, $article["idArticles"]);
- if ($cat) {
-   echo '<a href="categorie.php?cat=' . $cat["id"] . '">#' . $cat["name"] . '</a>';
-}
- 
- ?></p>
- 
-
- <div style="display:flex; justify-content:center;">
- <?php
- if ($idUser == $idAuteur) {
-    echo '<a style="margin-right:5px;" href="edit.php?edit='.$get_token.'"><button>Editer</button></a>';
-    echo ' <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>
-    <input type="hidden" name="articleToken" value="<?php echo $editToken?>">
-       <button name="delete" class="buttondelete"  type="submit" value="delete">Delete</button>
-    </form>';
- }
- ?>
-
- </div>
-=======
       <h1><?php echo $titre ?></h1>
       <p><?php echo $contenu ?></p>
       <p><?php echo $publicationDate ?></p>
@@ -97,7 +68,6 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
          <input type="hidden" name="del" value="delete">
          <button name="delete" class="buttondelete btn" type="submit" value="delete">Delete</button>
       </form>
->>>>>>> ee868492355860bbd7bbc57247d332075477db2c
 </body>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link data-require="sweet-alert@*" data-semver="0.4.2" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
