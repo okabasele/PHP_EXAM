@@ -121,9 +121,9 @@ Name: <input id="upName" type="text" name="name" value="' . $name . '">
 E-mail: <input type="text" id="upEmail" name="email" value="' . $email . '">
 <br><br>';
 
-if ($user["token"] === $userAccount["token"]) {
+                if ($user["token"] === $userAccount["token"]) {
 
-    echo '<button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    echo '<button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
     Change password
 </button>
     <div class="collapse" id="collapseExample">
@@ -146,8 +146,8 @@ if ($user["token"] === $userAccount["token"]) {
         </div>
     
     </div>';
-}
-echo '<br><br>
+                }
+                echo '<br><br>
 <button name="modifie" type="submit" value="send">Change</button>
 </form>
 
@@ -164,19 +164,36 @@ echo '<br><br>
                 $articles = Article::getAllArticlesByUserID($connect, $userData["idUsers"]);
                 //parcourt du tableau "$articles"
                 if ($articles) {
-                    foreach ($articles as $art) {
+
+                    if (count($articles) == count($articles, COUNT_RECURSIVE)) {
+                        $art = $articles;
                         $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
                         echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
-                        <div class="row align-items-center">
-                            <div class=" mb-3 mb-sm-0">
-                                <h5>
-                                <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
-                                </h5>
-                                <div class="text-sm op-5">';
+                                <div class="row align-items-center">
+                                    <div class=" mb-3 mb-sm-0">
+                                        <h5>
+                                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                        </h5>
+                                        <div class="text-sm op-5">';
                         if ($cat) {
                             echo '<a class="text-black mr-2" href=categorie.php?cat=' . $cat["id"] . '>#' . $cat["name"] . '</a>';
                         }
                         echo '</div></div></div></div>';
+                    } else {
+                        foreach ($articles as $art) {
+                            $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
+                            echo ' <div class="article-block row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                                <div class="row align-items-center">
+                                    <div class=" mb-3 mb-sm-0">
+                                        <h5>
+                                        <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
+                                        </h5>
+                                        <div class="text-sm op-5">';
+                            if ($cat) {
+                                echo '<a class="text-black mr-2" href=categorie.php?cat=' . $cat["id"] . '>#' . $cat["name"] . '</a>';
+                            }
+                            echo '</div></div></div></div>';
+                        }
                     }
 
                     echo '            </div>
@@ -210,7 +227,7 @@ echo '<br><br>
                                 to create a new article.
                             </p>
                         </div>';
-                } elseif((isset($_SESSION["admin"]) && $_SESSION["admin"])){
+                } elseif ((isset($_SESSION["admin"]) && $_SESSION["admin"])) {
 
                     echo ' <p>This user did not create any article</p>';
                 }
