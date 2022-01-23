@@ -2,6 +2,8 @@
 require_once 'class/database-connection.php';
 require_once 'class/controller.php';
 require_once 'class/util.php';
+require_once 'class/article.php';
+require_once 'class/categorie.php';
 require_once 'assets/css/style-edit.php';
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
@@ -55,11 +57,17 @@ if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
     }
 
     //modifier l'article
-    var_dump($_POST);
     $editToken = $_POST["editToken"];
-    echo $editToken;
     if ($_POST['edit'] === "send") {
-        $edit = Controller::updateData($connect, "articles", "title=\"".$title."\",description=\"".$description."\",publicationDate=\"".$dateToAdd."\" WHERE token=\"".$editToken."\"");
+        $edit = Controller::updateData($connect, "articles", "title=\"" . $title . "\",description=\"" . $description . "\",publicationDate=\"" . $dateToAdd . "\" WHERE token=\"" . $editToken . "\"");
+        $editArticle = Controller::fetchData($connect, "*", "articles", "WHERE token=?", [$editToken]);
+        //supprimer id ancienne cat
+        if (isset($_POST["prevCat"]) && !empty($_POST["prevCat"])) {
+            $catArticle = Article::getCategorieByArticleID($connect, $editArticle["idArticles"]);
+            Categorie::deleteArticleIdFromCategorie($connect, $catArticle["id"], $editArticle["idArticles"]);
+        }
+        //ajouter a nouvel cat
+        Categorie::insertArticleIdIntoCategorie($connect, $categories, $editArticle["idArticles"]);
         Util::redirect("http://localhost/php_exam/details.php?art=$editToken");
     }
 }
@@ -75,31 +83,40 @@ if (isset($_GET["edit"]) && !empty($_GET["edit"])) {
 </head>
 
 <body>
-    
+
     <h2>Edition</h2>
-    <div class = card>
-    <!-- <p><span class="error">* required field</span></p> -->
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        Title: <input type="text" name="title" value="<?php echo $title ?>" required>
-        <span class="error">* <?php echo $titleErr; ?></span>
-        <br><br>
-        Description: <textarea name="description" rows="20" cols="70"><?php echo $description ?></textarea>
-        <br><br>
-        <input type="hidden" name="editToken" value="<?php echo $editToken?>">
-        <div>
-            Categories:
-            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "health") echo "checked"; ?> value="health">Health
-            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "politics") echo "checked"; ?> value="politics">Politics
-            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "environment") echo "checked"; ?> value="environment">Environment
-            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "beauty") echo "checked"; ?> value="beauty">Beauty
-            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "fashion") echo "checked"; ?> value="fashion">Fashion
-            <input type="radio" name="categories" <?php if (isset($_POST["categories"]) && $_POST["categories"] == "food") echo "checked"; ?> value="food">Food
-            <span class="error">* <?php echo $categoriesErr; ?></span>
+    <div class=card>
+        <!-- <p><span class="error">* required field</span></p> -->
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            Title: <input type="text" name="title" value="<?php echo $title ?>" required>
+            <span class="error">* <?php echo $titleErr; ?></span>
             <br><br>
-        </div>
-        <button name="edit" type="submit" value="send">Update</button>
-        
-    </form>
+            Description: <textarea name="description" rows="20" cols="70"><?php echo $description ?></textarea>
+            <br><br>
+            <input type="hidden" name="editToken" value="<?php echo $editToken ?>">
+            <div>
+                Categories:
+                <?php
+                $catArticle = Article::getCategorieByArticleID($connect, $editArticle["idArticles"]);
+                $arrayCat = Controller::fetchData($connect, "id,name", "categories", "");
+                foreach ($arrayCat as $cat) {
+                    if ($catArticle) {
+                        if ($cat["name"] == $catArticle["name"]) {
+                            echo '<input type="hidden" name="prevCat" value="' . $cat["id"] . '">';
+                            echo '<input type="radio" name="categories" value="' . $cat["id"] . '" checked>' . ucfirst($cat["name"]);
+                        } else {
+
+                            echo '<input type="radio" name="categories" value="' . $cat["id"] . '">' . ucfirst($cat["name"]);
+                        }
+                    } else {
+                        echo '<input type="radio" name="categories" value="' . $cat["id"] . '">' . ucfirst($cat["name"]);
+                    }
+                }
+                ?>
+            </div>
+            <button name="edit" type="submit" value="send">Update</button>
+
+        </form>
 </body>
 
 </html>

@@ -20,6 +20,20 @@ class Categorie extends Controller
         }
     }
 
+    static function deleteArticleIdFromCategorie(mysqli $connect, int $idCat, int $artID):void
+    {
+        $categorie = self::getCategorieByID($connect,$idCat);
+        if ($categorie) {
+            $articlesID = explode(",",$categorie["article"]);
+            foreach ($articlesID as $id) {
+                if ($id==$artID) {
+                    unset($id);
+                }
+            }
+            $articlesID = implode(",",$articlesID);
+            self::updateData($connect, "categories", "idArticles=? WHERE id=?", [$articlesID, $idCat]);
+        }
+    }
     static function getAllArticlesByCategorieID(mysqli $connect, int $idCat): array
     {
         $articlesID = self::getArticlesIDByCategorieID($connect, $idCat);
