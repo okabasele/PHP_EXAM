@@ -7,7 +7,7 @@
 
     .nav {
         position: sticky;
-        background: pink;
+        background: #A8D8DF;
     }
 
     .nav-wrap {
@@ -25,7 +25,7 @@
     .icon {
         width: 50px;
         height: 50px;
-        background-color: red;
+        background-color: #CAE7E8;
     }
 
     .pages {
