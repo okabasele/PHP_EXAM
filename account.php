@@ -126,12 +126,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
                                         <h5>
                                         <a href="details.php?art=' . $art["token"] . '" class="text-primary">' . $art["title"] . '</a>
                                         </h5>
-                                        <p class="text-sm">
-                                        <span class="op-6">Posted the ' . $art["publicationDate"] . ' by</span>
-                                        <a class="text-black" href="account.php?u=' . $userData["token"] . '">' . $userData["username"] . '</a></p>
-                                        <div class="text-muted">
-                                        <p class="paragraph">' . $art["description"] . '</p>
-                                        </div>
+
                                         <div class="text-sm op-5">';
                 if ($cat) {
                     echo '<a class="text-black mr-2" href="' . $cat["id"] . '">#' . $cat["name"] . '</a>';

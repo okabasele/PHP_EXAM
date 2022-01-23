@@ -3,6 +3,8 @@ require_once 'class/database-connection.php';
 require_once 'class/controller.php';
 require_once 'class/util.php';
 require_once 'class/user.php';
+require_once 'class/categorie.php';
+
 require_once 'assets/css/style-details.php';
 require_once 'class/article.php';
 //Récuperer la connection à la bdd
@@ -54,15 +56,26 @@ if($article) {
  <p><?php echo $contenu ?></p>
  <p><?php echo $publicationDate ?></p>
  <p><?php echo User::getUserByID($connect,$idAuteur)["username"]; ?></p>
+ <p><?php 
+ $cat = Article::getCategorieByArticleID($connect, $article["idArticles"]);
+ if ($cat) {
+   echo '<a href="categorie.php?cat=' . $cat["id"] . '">#' . $cat["name"] . '</a>';
+}
+ 
+ ?></p>
+ 
 
+ <div style="display:flex; justify-content:center;">
  <?php
  if ($idUser == $idAuteur) {
-    echo '<a href="edit.php?edit='.$get_token.'"><button>Editer</button></a>';
+    echo '<a style="margin-right:5px;" href="edit.php?edit='.$get_token.'"><button>Editer</button></a>';
+    echo ' <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>
+    <input type="hidden" name="articleToken" value="<?php echo $editToken?>">
+       <button name="delete" class="buttondelete"  type="submit" value="delete">Delete</button>
+    </form>';
  }
  ?>
- <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
- <input type="hidden" name="articleToken" value="<?php echo $editToken?>">
-    <button name="delete" class="buttondelete"  type="submit" value="delete">Delete</button>
- </form>
+
+ </div>
 </body>
 </html>
