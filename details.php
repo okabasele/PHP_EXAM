@@ -82,7 +82,7 @@ if (isset($_GET['art']) && !empty($_GET['art'])) {
          <?php
          if ($idUser == $idAuteur) {
             echo '<a style="margin-right:10px;" href="edit.php?edit=' . $get_token . '"><button class="btn">Editer</button></a>';
-            echo '<form id="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            echo '<form id="form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>
                <input type="hidden" name="articleToken" value="<?php echo $get_token ?>">
                <input type="hidden" name="del" value="delete">
                <button name="delete" class="buttondelete btn" type="submit" value="delete">Delete</button>
