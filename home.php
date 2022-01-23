@@ -63,7 +63,7 @@ if (isset($_SESSION["token"]) && !empty($_SESSION["token"]) && isset($_SESSION["
                 foreach ($articles as $art) {
                     $user = User::getUserByID($connect, $art["idUsers"]);
                     $cat = Article::getCategorieByArticleID($connect, $art["idArticles"]);
-                    echo ' <div class="article-block card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                    echo ' <div class="article-block card row-hover pos-relative py-3 px-3 mb-3 border-light border-top-0 border-right-0 border-bottom-0 rounded-0">
                                 <div class="row align-items-center">
                                     <div class=" mb-3 mb-sm-0">
                                         <h5>
