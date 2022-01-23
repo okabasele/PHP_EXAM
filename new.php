@@ -18,6 +18,7 @@
   require_once 'class/categorie.php';
   require_once 'class/article.php';
   require_once 'class/util.php';
+  require_once 'class/user.php';
   session_start();
   //Récuperer la connection à la bdd
   $dbconnect = Util::getDatabaseConnection();

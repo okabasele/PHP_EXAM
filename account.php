@@ -205,12 +205,14 @@ if (isset($update)) {
             break;
         case ($update > 0):
             echo '<script>
-                    swal("Update", "Your data have been succesfully updated.", "success");
+                    swal("Update", "Your data have been succesfully updated.", "success").then(function () {
+                        window.location.href = "http://localhost/php_exam/login.php";
+                      });
                     </script>';
             // Util::redirect("account.php?u=".$_POST['tokenUser']);
             break;
         case 0:
-            Util::redirect("account.php?u=".$_POST['tokenUser']);
+            Util::redirect("account.php?u=" . $_POST['tokenUser']);
             break;
     }
 }
