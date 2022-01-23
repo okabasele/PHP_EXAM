@@ -44,7 +44,7 @@ button{
   background-color: white;
   border: 1px solid black;
   border-radius: 8px;
-
+  margin-top:10%;
 }
 
 button:hover {
@@ -58,15 +58,15 @@ button:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+
+.text{
+margin-top: 80px;
+}
+
 .me-2 {
     margin-right: .5rem!important;
 }
 
-h2{
-  text-align:center;
-  font-family:sans serif;
-  font-size:200%;
-}
 
 
 </style>
