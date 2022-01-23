@@ -4,7 +4,7 @@ class User extends Controller
 {
 
     //Ajouter un utlisateur dans la base de données (REGISTER)
-    public static function addUserInDatabase(mysqli $connect, string $username, string $password, string $password2, string $email, string $token,string $status): int
+    public static function addUserInDatabase(mysqli $connect, string $username, string $password, string $password2, string $email, string $token, string $status): int
     {
         //Verifier si l'utilisateur n'est pas déja dans la BDD
         if (self::checkUsername($connect, $username, $password)) //Username deja utilisé
@@ -28,7 +28,7 @@ class User extends Controller
         //Crypté le mot de passe avant de le stocker
         $password = password_hash($password, PASSWORD_BCRYPT);
         //Ajouter l'utilisateur dans la BDD
-        self::insertData($connect, "users", "username=?,password=?,email=?,token=?,status=?", [$username, $password, $email, $token,$status]);
+        self::insertData($connect, "users", "username=?,password=?,email=?,token=?,status=?", [$username, $password, $email, $token, $status]);
         return 1;
     }
 
@@ -49,6 +49,50 @@ class User extends Controller
         return 1;
     }
 
+    //Changer les données de l'utilisateur
+    public static function updateAccount(mysqli $connect, string $username, string $email, string $prevPassword, string $newPassword, string $confPassword, string $tokenUser): int
+    {
+        $user = User::getUserByToken($connect, $tokenUser);
+        $changed = 0;
+        //Si l'utilisateur change l'adresse mail
+        if (isset($email) && !empty($email)) {
+            if ($email != $user["email"]) {
+                if (!self::isEmailValid($email)) { //adresse email invalide
+
+                    return -1;
+                } else {
+
+                    self::updateData($connect, "users", "email='$email' WHERE token ='$tokenUser'");
+                    $changed++;
+                }
+            }
+        }
+        //changer de mot de passe
+        if (isset($prevPassword) && !empty($prevPassword) && isset($newPassword) && !empty($newPassword) && isset($confPassword) && !empty($confPassword)) {
+            if (!self::passwordMatch($prevPassword, $newPassword)) { //pas entre la meme chose
+
+                if (!self::checkPasswordByUserToken($connect, $tokenUser, $prevPassword)) { //current password pas valide
+                    return -2;
+                } elseif (!self::passwordMatch($newPassword, $confPassword)) { //nouveau mot de passe incorrect
+                    return -3;
+                } else {
+                    //Crypté le mot de passe avant de le stocker
+                    $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+                    self::updateData($connect, "users", "password='$newPassword' WHERE token ='$tokenUser'");
+                    $changed++;
+                }
+            }
+        }
+        //changer username
+        if (isset($username) && !empty($username)) {
+            if ($username != $user["username"]) {
+                self::updateData($connect, "users", "username='$username' WHERE token ='$tokenUser'");
+                $changed++;
+            }
+        }
+        return $changed;
+    }
+
     //Verifie si le mot de passe entré est le même que celui stocké dans la BDD	
     static function checkPassword(mysqli $connect, string $username, string $passwordToCheck): bool
     {
@@ -62,7 +106,19 @@ class User extends Controller
         }
         return false;
     }
-
+    //Verifie si le mot de passe entré est le même que celui stocké dans la BDD	
+    static function checkPasswordByUserToken(mysqli $connect, string $token, string $passwordToCheck): bool
+    {
+        if ($res = self::fetchData($connect, "password", "users", "WHERE token=?", [$token])) {
+            //On verifie qu'on a qu'un seul resultat rendu
+            if (sizeof($res) == 1) {
+                if (password_verify($passwordToCheck, $res["password"])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     //Verifie si le nom d'utilisateur entré est déjà dans la BDD
     static function checkUsername(mysqli $connect, string $username): bool
     {

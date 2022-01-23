@@ -24,7 +24,9 @@ body{
  margin-bottom: 1.5rem;
  box-shadow: 0 2px 6px 0 rgb(000 000 000 / 65%), 0 2px 6px 0 rgb(000 000 000 / 54%);
 }
-
+.left{
+  width: 50%;
+}
 button{
     display: inline-block;
   padding: 10px 24px;

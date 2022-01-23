@@ -21,7 +21,7 @@ if (isset($_POST['register'])) {
 		$password2 = $_POST['passwordConfirm'];
 		$token = Util::generateToken(20); //on crée un token d'authentification unique pour l'utilisateur
 		$status = "user";
-		$registered = UseraddUserInDatabase($connect, $user, $password, $password2, $email, $token,$status);
+		$registered = User::addUserInDatabase($connect, $user, $password, $password2, $email, $token,$status);
 	}
 }
 if (isset($_POST['login'])) {

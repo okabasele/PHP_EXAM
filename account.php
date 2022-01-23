@@ -55,7 +55,7 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 
     if (isset($_POST['modifie'])) {
         if ($_POST['modifie'] === "send") {
-            $account = User::updateAccount($connect, $_POST['username'], $_POST['email'], $_POST['prevPassword'], $_POST['newPassword'], $_POST['confPassword']);
+            $update = User::updateAccount($connect, $_POST['name'], $_POST['email'], $_POST['prevPassword'], $_POST['newPassword'], $_POST['confPassword'], $_POST['tokenUser']);
         }
     }
 }
@@ -92,27 +92,33 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
             <div class="card">
                 <div class="left">
                     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-
-                        Name: <input type="text" name="name" value="<?php echo $name; ?>">
+                        <input type="hidden" name="tokenUser" value="<?php echo $userToken ?>">
+                        Name: <input id="upName" type="text" name="name" value="<?php echo $name; ?>">
                         <br><br>
-                        E-mail: <input type="text" name="email" value="<?php echo $email; ?>">
+                        E-mail: <input type="text" id="upEmail" name="email" value="<?php echo $email; ?>">
                         <br><br>
-                        <div>
+                        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Change password
+                        </button>
+                        <div class="collapse" id="collapseExample">
 
-                            <label for="pass">Current Password:</label>
-                            <input type="password" id="pass" name="prevPassword" minlength="8">
-                        </div>
-                        <br><br>
-                        <div>
+                            <div>
+                                <label for="pass">Current Password:</label>
+                                <input id="upPP" type="password" name="prevPassword" minlength="8">
+                            </div>
+                            <br><br>
+                            <div>
 
-                            <label for="pass">New Password:</label>
-                            <input type="password" id="pass" name="newPassword" minlength="8">
-                        </div>
-                        <br><br>
-                        <div>
+                                <label for="pass">New Password:</label>
+                                <input id="upNP" type="password" name="newPassword" minlength="8">
+                            </div>
+                            <br><br>
+                            <div>
 
-                            <label for="pass">Confirmation New Password:</label>
-                            <input type="password" id="pass" name="confPassword" minlength="8">
+                                <label for="pass">Confirmation New Password:</label>
+                                <input id="upCP" type="password" name="confPassword" minlength="8">
+                            </div>
+
                         </div>
                         <br><br>
                         <button name="modifie" type="submit" value="send">Change</button>
@@ -174,6 +180,36 @@ if (isset($_GET["u"]) && !empty($_GET["u"])) {
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <?php
 require_once "assets/js/js-pagination.php";
+?>
+<?php
+//update
+if (isset($update)) {
+    switch ($update) {
+        case -1:
+            echo '<script>swal("Authentification failed", "The email is not valid.", "error");
+			logUid.classList.add("inputError");
+			</script>';
+            break;
+        case -2:
+            echo '<script>
+			swal("Authentification failed", "Your current password is incorrect.", "error");
+			logPwd.classList.add("inputError");
+			</script>';
+            break;
+        case -3:
+            echo '<script>
+                swal("Authentification failed", "Your new password is incorrect.", "error");
+                logPwd.classList.add("inputError");
+                </script>';
+            break;
+        case ($update > 0):
+            echo '<script>
+                    swal("Update", "Your data have been succesfully updated.", "success");
+                    </script>';
+            Util::redirect("account.php?u=" . $_POST['tokenUser']);
+            break;
+    }
+}
 ?>
 
 </html>
