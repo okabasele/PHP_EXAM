@@ -7,6 +7,8 @@
       color: #FF0000;
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body>
@@ -82,7 +84,12 @@
   ?>
   
   <h2>Add new artical</h2>
-  <div class="card">
+  
+  <div class="menu__group">
+    <a href="home.php">
+      <button class="butt"><i class="fa fa-home"></i> Home</button>
+   </a>
+   <div class="card">
   <!-- <p><span class="error">* required field</span></p> -->
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
     Title: <input type="text" name="title" required>

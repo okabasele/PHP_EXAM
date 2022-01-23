@@ -61,8 +61,24 @@ button:active {
 
 h2{
   text-align:center;
-  font-family:sans serif;
   font-size:200%;
 }
+
+.butt{
+  background-color: #42AAC3;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 8px;
+
+}
+
+.butt:hover {
+  background-color: #209BBA;
+}
+
 
 </style>

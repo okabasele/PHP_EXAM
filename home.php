@@ -13,6 +13,7 @@ require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'class/article.php';
 require_once 'class/categorie.php';
+
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
