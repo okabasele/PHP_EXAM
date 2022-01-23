@@ -24,8 +24,16 @@ class Article extends Controller
         return self::fetchData($connect,"*","articles","WHERE idUsers=?",[$userID]);
     }
 
-    static function getArticleByToken($connect,$token) : array|false
+    static function getArticleByToken(mysqli $connect, string $token) : array|false
     {
         return self::fetchData($connect, "*", "articles", "WHERE token=?", [$token]);
     }
+
+
+    static function deleteArticleByToken(mysqli $connect, string $token) : void
+    {
+        self::sendQuery($connect,"DELETE FROM articles WHERE token='.$token.'");
+    }
+
+
 }

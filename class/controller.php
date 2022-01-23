@@ -39,4 +39,5 @@ class Controller
         {
             return self::sendQuery($connect, "UPDATE $table SET $conditions", $values);
         }
+
 }
