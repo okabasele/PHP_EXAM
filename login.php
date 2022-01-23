@@ -6,22 +6,21 @@ require_once 'class/user.php';
 require_once 'assets/css/style.php';
 require_once 'assets/css/style-details.php';
 
-session_start();
 //Récuperer la connection à la bdd
 $dbconnect = Util::getDatabaseConnection();
 $connect = $dbconnect->conn;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-if (isset($_POST['login'])) {
-	if ($_POST['login'] === "send") {
-		$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
+	if (isset($_POST['login'])) {
+		if ($_POST['login'] === "send") {
+			$loggedIn = User::isUserInDatabase($connect, $_POST['username'], $_POST['password']);
+		}
 	}
-}
-if (isset($_POST['register'])) {
-	if ($_POST['register'] === "Sign up") {
-		Util::redirect("register.php");
+	if (isset($_POST['register'])) {
+		if ($_POST['register'] === "Sign up") {
+			Util::redirect("register.php");
+		}
 	}
-}
-} elseif (isset($_GET["u"]) && !empty($_GET["u"])) {
+} else {
 	session_unset();
 }
 ?>
@@ -81,9 +80,10 @@ if (isset($loggedIn)) {
 			break;
 		case 1:
 			echo '<script>console.log("Auth ok")</script>';
-			$_SESSION["logged-in"]= true;
-			$userToken = Controller::fetchData($connect,"token","users","WHERE username=?",[$_POST['username']]);
-			$_SESSION["token"]= $userToken["token"];
+			session_start();
+			$_SESSION["logged-in"] = true;
+			$userToken = Controller::fetchData($connect, "token", "users", "WHERE username=?", [$_POST['username']]);
+			$_SESSION["token"] = $userToken["token"];
 			Util::redirect("home.php");
 			break;
 	}
