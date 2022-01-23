@@ -69,8 +69,10 @@ body{
   border: none;
   color: white;
   padding: 12px 16px;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
+  border: 1px solid black;
+  border-radius: 8px;
 }
 
 .button:hover {

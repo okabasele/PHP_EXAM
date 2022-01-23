@@ -4,7 +4,7 @@ require_once 'class/util.php';
 require_once 'class/controller.php';
 require_once 'class/user.php';
 require_once 'assets/css/style.php';
-require_once 'assets/css/style-details.php';
+require_once 'assets/css/style-login.php';
 
 session_start();
 //Récuperer la connection à la bdd
@@ -47,7 +47,7 @@ if (isset($_POST['register'])) {
 
 <body>
 	<div class="container">
-
+       <div class="card">
 		<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 			<input id="logUid" name="username" placeholder="USERNAME" type="text" required>
 			<input id="logPwd" name="password" placeholder="PASSWORD" type="password" required>
